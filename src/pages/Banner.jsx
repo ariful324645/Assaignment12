@@ -41,7 +41,7 @@ const Banner = () => {
   };
 
   return (
-    <div className="my-10">
+    <div className="my-8">
       <div
         className="my-10"
         style={{ maxWidth: 1200, margin: "auto", position: "relative" }}
@@ -51,7 +51,7 @@ const Banner = () => {
           alt={slides[currentIndex].title}
           style={{
             width: "100%",
-            height: 400,
+            height: 600,
             objectFit: "cover",
             borderRadius: 8,
           }}

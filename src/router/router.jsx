@@ -5,6 +5,10 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ErrorPage from "../components/ErrorPage";
+import DashBoardLayout from "../Layouts/DashBoardLayout";
+import addProduct from "../pages/Dashboard/addProduct";
+import MyProducts from "../pages/Dashboard/MyProducts";
+import MyProfile from "../pages/Dashboard/MyProfile";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -24,6 +28,24 @@ export const router = createBrowserRouter([
       {
         path: "/register",
         Component: Register,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <DashBoardLayout></DashBoardLayout>,
+    children: [
+      {
+        path: "addProduct",
+        Component: addProduct,
+      },
+      {
+        path: "myProducts",
+        Component: MyProducts,
+      },
+      {
+        path: "myProfile",
+        Component: MyProfile,
       },
     ],
   },
