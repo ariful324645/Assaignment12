@@ -10,6 +10,7 @@ import addProduct from "../pages/Dashboard/addProduct";
 import MyProducts from "../pages/Dashboard/MyProducts";
 import MyProfile from "../pages/Dashboard/MyProfile";
 import Products from "../pages/Products";
+import ProductDetails from "../pages/Dashboard/ProductDetails";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
       {
         path: "/products",
         element: <Products></Products>,
+      },
+      {
+        path: "/productDetails/:id",
+        element: <ProductDetails></ProductDetails>,
       },
     ],
   },

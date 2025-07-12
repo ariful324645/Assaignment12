@@ -22,15 +22,19 @@ const FeaturedProducts = () => {
   //  Handle Upvote
   const handleUpvote = async (productId) => {
     if (!user) return navigate("/login");
-    else {
+    try {
       const res = await axios.post(
         `http://localhost:3000/products/featured/${productId}/upvote`,
         { userId: user.email }
       );
 
       setProducts((prev) =>
-        prev.map((p) => (p._id === productId ? res.data : p))
+        prev
+          .map((p) => (p._id === productId ? res.data : p))
+          .sort((a, b) => b.votes - a.votes)
       );
+    } catch (err) {
+      console.error("Upvote failed:", err);
     }
   };
 

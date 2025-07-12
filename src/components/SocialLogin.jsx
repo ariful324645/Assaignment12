@@ -2,13 +2,26 @@ import React, { use } from "react";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 import { Navigate, useNavigate } from "react-router";
+import axios from "axios";
 
 const SocialLogin = () => {
   const navigate = useNavigate();
   const { googleLogin } = use(AuthContext);
   const handleGoogle = () => {
     googleLogin()
-      .then((result) => {
+      .then(async (result) => {
+        const user = result.user;
+        const userInfo = {
+          email: user.email,
+          role: "user", //Default
+          created_at: new Date().toISOString(),
+          last_login: new Date().toISOString(),
+        };
+        const userRes = await axios.post(
+          "http://localhost:3000/users",
+          userInfo
+        );
+        console.log("user update info", userRes.data);
         Swal.fire({
           position: "center",
           icon: "success",
@@ -16,7 +29,6 @@ const SocialLogin = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-
         navigate("/");
         console.log(result);
       })

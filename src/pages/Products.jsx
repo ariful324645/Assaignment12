@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, use } from "react";
 import axios from "axios";
 import { FaThumbsUp } from "react-icons/fa";
-import { AuthContext } from "../context/AuthContext";
+
 import { useNavigate } from "react-router";
+import { AuthContext } from "../context/AuthContext";
 
 const Products = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -10,7 +11,8 @@ const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
-  const { user } = useContext(AuthContext);
+  const { user } = use(AuthContext);
+  console.log(user);
   const navigate = useNavigate();
 
   useEffect(() => {

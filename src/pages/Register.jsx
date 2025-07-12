@@ -5,10 +5,11 @@ import Lottie from "lottie-react";
 import loginLotie from "../assets/loties/lotieRegister.json";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Register = () => {
   const navigate = useNavigate();
-  const { user, createUser } = use(AuthContext);
+  const { user, createUser, updateUser, setUser } = use(AuthContext);
   const handleRegister = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -17,7 +18,26 @@ const Register = () => {
     const password = e.target.password.value;
     console.log(name, email, photo, password);
     createUser(email, password)
-      .then((result) => {
+      .then(async (result) => {
+        //update user info
+        const userInfo = {
+          name: name,
+          email: email,
+          role: "user", //Default
+          created_at: new Date().toISOString(),
+          last_login: new Date().toISOString(),
+        };
+        const userRes = await axios.post(
+          "http://localhost:3000/users",
+          userInfo
+        );
+        console.log(userRes);
+
+        updateUser({ displayName: name, photoURL: photo })
+          .then(() => {
+            setUser({ ...user, displayName: name, photoURL: photo });
+          })
+          .catch((error) => console.log(error));
         Swal.fire({
           position: "center",
           icon: "success",

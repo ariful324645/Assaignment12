@@ -5,6 +5,7 @@ import Lottie from "lottie-react";
 import registerLotie from "../assets/loties/lotieLogin.json";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,7 +17,20 @@ const Login = () => {
     const password = e.target.password.value;
     console.log(email, password);
     userLogin(email, password)
-      .then((result) => {
+      .then(async (result) => {
+        const userInfo = {
+          password:password,
+          email: email,
+          role: "user", //Default
+          created_at: new Date().toISOString(),
+          last_login: new Date().toISOString(),
+        };
+        const userRes = await axios.post(
+          "http://localhost:3000/users",
+          userInfo
+        );
+        console.log(userRes);
+
         console.log(result);
         Swal.fire({
           position: "center",
@@ -77,7 +91,10 @@ const Login = () => {
               className="w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
             />
           </div>
-          <button type="submit" className="block w-full p-3 text-center rounded-sm dark:text-gray-50 dark:bg-violet-600">
+          <button
+            type="submit"
+            className="block w-full p-3 text-center rounded-sm dark:text-gray-50 dark:bg-violet-600"
+          >
             Login
           </button>
           <p className="text-xs mt-3 text-center sm:px-6 dark:text-gray-600">
