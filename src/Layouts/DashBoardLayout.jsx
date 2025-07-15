@@ -1,47 +1,22 @@
 import React from "react";
-import { NavLink, Outlet } from "react-router";
+import { Link, NavLink, Outlet } from "react-router";
 
 const DashBoardLayout = () => {
   return (
-    <div className="bg-[#e6fff7]">
-      <div className="drawer lg:drawer-open">
-        <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content flex flex-col ">
-          {/* Navbar */}
-          <div className="navbar bg-base-300 w-full lg:hidden">
-            <div className="flex-none ">
-              <label
-                htmlFor="my-drawer-2"
-                aria-label="open sidebar"
-                className="btn btn-square btn-ghost"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  className="inline-block h-6 w-6 stroke-current"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  ></path>
-                </svg>
-              </label>
+    <div className="">
+      <div className="min-h-screen bg-[#e6fff7] grid grid-cols-1 lg:grid-cols-12">
+        {/* Left Sidebar */}
+        <aside className="bg-gray-200 p-4 lg:col-span-3 flex flex-col items-start">
+          <Link to="/">
+            <div className="flex items-center ml-3 gap-2 ">
+              <img
+                src="https://i.ibb.co/zVvp0GsS/appOrbit.jpg"
+                alt="AppOrbit Logo"
+                className="w-12 h-12 rounded-full object-cover"
+              />
+              <span className="text-xl font-bold">AppOrbit</span>
             </div>
-            <div className="mx-2 flex-1 px-2">Dashboard</div>
-          </div>
-          {/* Page content here */}
-          <Outlet></Outlet>
-          {/* Page content here */}
-        </div>
-        <div className="drawer-side">
-          <label
-            htmlFor="my-drawer-2"
-            aria-label="close sidebar"
-            className="drawer-overlay"
-          ></label>
+          </Link>
           <ul className="menu bg-gray-200 text-base-content min-h-full w-80 p-4">
             {/* Sidebar content here */}
             <NavLink to="addProduct">
@@ -54,7 +29,12 @@ const DashBoardLayout = () => {
               <li>MyProfile</li>
             </NavLink>
           </ul>
-        </div>
+        </aside>
+
+        {/* Main Content */}
+        <main className="bg-[#e6fff7] p-4 lg:col-span-9">
+          <Outlet />
+        </main>
       </div>
     </div>
   );

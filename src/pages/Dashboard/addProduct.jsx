@@ -67,29 +67,28 @@ export default function AddProduct() {
       tags: tags.map((tag) => tag.text),
       externalLinks: data.externalLinks,
       votes: 0,
+      userId: user._id,
       status: "pending",
       isFeatured: false,
       timestamp: new Date(),
     };
 
-   
-      await axios.post("http://localhost:3000/products", newProduct);
-      toast.success("Product added successfully!");
-      reset();
-      setTags([]);
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "Product added successfully",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      navigate("/dashboard/myProducts");
-   
+    await axios.post("http://localhost:3000/products", newProduct);
+    toast.success("Product added successfully!");
+    reset();
+    setTags([]);
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "Product added successfully",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    navigate("/dashboard/myProducts");
   };
 
   return (
-    <div className="max-w-4xl mx-auto my-10 px-6 py-10 bg-white/90 backdrop-blur rounded-2xl shadow-lg border border-gray-200">
+    <div className="max-w-4xl mx-auto  px-6 py-10 bg-white/90 backdrop-blur rounded-2xl shadow-lg border border-gray-200">
       <h2 className="text-3xl font-bold text-center text-blue-800 mb-8">
         Add Product
       </h2>
@@ -113,7 +112,7 @@ export default function AddProduct() {
         {/* Product Image URL */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Product Image  <span className="text-red-500">*</span>
+            Product Image <span className="text-red-500">*</span>
           </label>
           <input
             {...register("image", { required: "Product image is required" })}

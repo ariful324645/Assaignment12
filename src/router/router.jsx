@@ -11,6 +11,8 @@ import MyProducts from "../pages/Dashboard/MyProducts";
 import MyProfile from "../pages/Dashboard/MyProfile";
 import Products from "../pages/Products";
 import ProductDetails from "../pages/Dashboard/ProductDetails";
+
+import UpdateProduct from "../pages/Dashboard/UpdateProduct";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -56,6 +58,10 @@ export const router = createBrowserRouter([
       {
         path: "myProfile",
         Component: MyProfile,
+      },
+      {
+        path: "updateProduct/:productId",
+        Component: UpdateProduct,
       },
     ],
   },
