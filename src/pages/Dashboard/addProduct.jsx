@@ -1,36 +1,16 @@
-import { useState, use } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { WithContext as ReactTags } from "react-tag-input";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
-
-// react-tag-input key codes
-const KeyCodes = {
-  comma: 188,
-  enter: 13,
-};
-const delimiters = [KeyCodes.comma, KeyCodes.enter];
-
-// Suggestions
-const suggestionsList = [
-  { id: "1", text: "Artificial Intelligence" },
-  { id: "2", text: "Design Systems" },
-  { id: "3", text: "Productivity Tools" },
-  { id: "4", text: "Collaboration Platform" },
-  { id: "5", text: "Open Source" },
-  { id: "6", text: "Chrome Extension" },
-  { id: "7", text: "Marketing Automation" },
-  { id: "8", text: "Customer Support" },
-  { id: "9", text: "Data Analytics" },
-];
+import TagsComponent from "./TagsComponent";
+import { useNavigate } from "react-router";
 
 export default function AddProduct() {
-  const { user } = use(AuthContext);
+  const [tags, setTags] = useState([]);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const {
@@ -40,22 +20,14 @@ export default function AddProduct() {
     formState: { errors },
   } = useForm();
 
-  const [tags, setTags] = useState([]);
-
-  const handleDelete = (i) => {
-    setTags(tags.filter((tag, index) => index !== i));
-  };
-
-  const handleAddition = (tag) => {
-    setTags([...tags, tag]);
-  };
-
   const onSubmit = async (data) => {
     if (!user) {
       toast.error("You must be logged in to add a product");
       navigate("/login");
       return;
     }
+
+    const tagTexts = tags.map((tag) => tag.text); // convert tags array of objects to array of strings
 
     const newProduct = {
       name: data.name,
@@ -64,7 +36,7 @@ export default function AddProduct() {
       ownerName: user.displayName,
       ownerImage: user.photoURL,
       ownerEmail: user.email,
-      tags: tags.map((tag) => tag.text),
+      tags: tagTexts,
       externalLinks: data.externalLinks,
       votes: 0,
       userId: user._id,
@@ -73,22 +45,26 @@ export default function AddProduct() {
       timestamp: new Date(),
     };
 
-    await axios.post("http://localhost:3000/products", newProduct);
-    toast.success("Product added successfully!");
-    reset();
-    setTags([]);
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Product added successfully",
-      showConfirmButton: false,
-      timer: 1500,
-    });
-    navigate("/dashboard/myProducts");
+    try {
+      await axios.post("http://localhost:3000/products", newProduct);
+      toast.success("Product added successfully!");
+      reset();
+      setTags([]);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Product added successfully",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigate("/dashboard/myProducts");
+    } catch (err) {
+      toast.error("Failed to add product");
+    }
   };
 
   return (
-    <div className="max-w-4xl mx-auto  px-6 py-10 bg-white/90 backdrop-blur rounded-2xl shadow-lg border border-gray-200">
+    <div className="max-w-4xl mx-auto px-6 py-10 bg-white/90 backdrop-blur rounded-2xl shadow-lg border border-gray-200">
       <h2 className="text-3xl font-bold text-center text-blue-800 mb-8">
         Add Product
       </h2>
@@ -101,23 +77,23 @@ export default function AddProduct() {
           </label>
           <input
             {...register("name", { required: "Product name is required" })}
-            className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-300 focus:outline-none"
-            placeholder="Product name "
+            className="w-full border rounded-lg px-4 py-2"
+            placeholder="Product name"
           />
           {errors.name && (
             <p className="text-xs text-red-600 mt-1">{errors.name.message}</p>
           )}
         </div>
 
-        {/* Product Image URL */}
+        {/* Product Image */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Product Image <span className="text-red-500">*</span>
+            Product Image URL <span className="text-red-500">*</span>
           </label>
           <input
-            {...register("image", { required: "Product image is required" })}
-            className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-300 focus:outline-none"
-            placeholder="product image url"
+            {...register("image", { required: "Image URL is required" })}
+            className="w-full border rounded-lg px-4 py-2"
+            placeholder="Image URL"
           />
           {errors.image && (
             <p className="text-xs text-red-600 mt-1">{errors.image.message}</p>
@@ -134,8 +110,8 @@ export default function AddProduct() {
               required: "Description is required",
             })}
             rows={4}
-            className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-300 focus:outline-none resize-none"
-            placeholder="Describe what your product does..."
+            className="w-full border rounded-lg px-4 py-2 resize-none"
+            placeholder="Describe your product"
           />
           {errors.description && (
             <p className="text-xs text-red-600 mt-1">
@@ -144,8 +120,8 @@ export default function AddProduct() {
           )}
         </div>
 
-        {/* Owner Info (Read-only) */}
-        <div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
+        {/* Owner Info */}
+        <div className="bg-blue-50 border rounded-lg p-4">
           <h3 className="text-sm font-semibold text-blue-700 mb-3">
             👤 Owner Information (Read-Only)
           </h3>
@@ -153,63 +129,40 @@ export default function AddProduct() {
             <input
               value={user?.displayName || ""}
               readOnly
-              className="bg-white border rounded px-3 py-2 text-sm text-gray-700"
-              placeholder="Owner Name"
+              className="bg-white border rounded px-3 py-2 text-sm"
             />
             <input
               value={user?.photoURL || ""}
               readOnly
-              className="bg-white border rounded px-3 py-2 text-sm text-gray-700"
-              placeholder="Owner Image URL"
+              className="bg-white border rounded px-3 py-2 text-sm"
             />
             <input
               value={user?.email || ""}
               readOnly
-              className="bg-white border rounded px-3 py-2 text-sm text-gray-700"
-              placeholder="Owner Email"
+              className="bg-white border rounded px-3 py-2 text-sm"
             />
           </div>
         </div>
 
         {/* Tags */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Tags{" "}
-            <span className="text-gray-400 text-xs">
-              (Type and press enter)
-            </span>
-          </label>
-          <div className="border rounded-lg px-3 py-2 bg-white">
-            <ReactTags
-              tags={tags}
-              suggestions={suggestionsList}
-              handleDelete={handleDelete}
-              handleAddition={handleAddition}
-              delimiters={delimiters}
-              placeholder="Start typing to add tags..."
-            />
-          </div>
-        </div>
+        <TagsComponent tags={tags} setTags={setTags} />
 
-        {/* External Links */}
+        {/* External Link */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             External Link
           </label>
           <input
             {...register("externalLinks")}
-            className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-300 focus:outline-none"
-            placeholder="external link "
+            className="w-full border rounded-lg px-4 py-2"
+            placeholder="Optional link to your website"
           />
-          <p className="text-xs text-gray-400 mt-1">
-            Optional: Link to your website or landing page.
-          </p>
         </div>
 
-        {/* Submit Button */}
+        {/* Submit */}
         <button
           type="submit"
-          className="w-full mt-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-lg font-semibold py-3 rounded-lg shadow transition transform hover:scale-105"
+          className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold text-lg"
         >
           ➕ Submit Product
         </button>

@@ -48,12 +48,21 @@ export const router = createBrowserRouter([
     element: <DashBoardLayout></DashBoardLayout>,
     children: [
       {
+        path: "/dashboard",
+        Component: MyProducts,
+      },
+      {
         path: "addProduct",
         Component: addProduct,
       },
       {
         path: "myProducts",
         Component: MyProducts,
+      },
+      // Moderator
+      {
+        path: "moderator",
+        element: <div>This is moderator Page</div>,
       },
       {
         path: "myProfile",

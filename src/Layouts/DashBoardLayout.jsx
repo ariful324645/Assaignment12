@@ -1,7 +1,27 @@
-import React from "react";
+import axios from "axios";
+import React, { use, useEffect, useState } from "react";
 import { Link, NavLink, Outlet } from "react-router";
+import { AuthContext } from "../context/AuthContext";
 
 const DashBoardLayout = () => {
+  const { user } = use(AuthContext);
+  const [role, setRole] = useState(null);
+
+  useEffect(() => {
+    const fetchRole = async () => {
+      const response = await axios.get(
+        `http://localhost:3000/user_role/${user?.email}`
+      );
+      console.log(response.data.role);
+      setRole(response.data.role);
+    };
+
+    if (user?.email) {
+      fetchRole();
+    }
+  }, [user]);
+
+  // const role = "admin";
   return (
     <div className="">
       <div className="min-h-screen bg-[#e6fff7] grid grid-cols-1 lg:grid-cols-12">
@@ -18,16 +38,31 @@ const DashBoardLayout = () => {
             </div>
           </Link>
           <ul className="menu bg-gray-200 text-base-content min-h-full w-80 p-4">
-            {/* Sidebar content here */}
-            <NavLink to="addProduct">
-              <li>AddProduct</li>
-            </NavLink>
-            <NavLink to="myProducts">
-              <li>MyProducts</li>
-            </NavLink>
-            <NavLink to="myProfile">
-              <li>MyProfile</li>
-            </NavLink>
+            {role === "user" ? (
+              <>
+                <NavLink to="/dashboard">
+                  <li>Dashboard</li>
+                </NavLink>
+                <NavLink to="addProduct">
+                  <li>AddProduct</li>
+                </NavLink>
+                <NavLink to="myProducts">
+                  <li>MyProducts</li>
+                </NavLink>
+                <NavLink to="myProfile">
+                  <li>MyProfile</li>
+                </NavLink>
+              </>
+            ) : (
+              <>
+                <NavLink to="/dashboard">
+                  <li>Dashboard</li>
+                </NavLink>
+                <NavLink to="moderator">
+                  <li>Moderator</li>
+                </NavLink>
+              </>
+            )}
           </ul>
         </aside>
 
