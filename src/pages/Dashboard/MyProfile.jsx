@@ -45,6 +45,7 @@ const CheckoutForm = ({ user, onPaymentSuccess }) => {
     const result = await stripe.confirmCardPayment(clientSecret, {
       payment_method: { card },
     });
+    console.log(result)
 
     if (result.error) {
       setError(result.error.message);
@@ -94,7 +95,7 @@ const MyProfile = () => {
   if (!user) return <div className="p-6 text-center">Loading...</div>;
 
   return (
-    <div className="max-w-md mx-auto my-10 p-6 border rounded-lg shadow-sm">
+    <div className="max-w-md mx-auto mt-56 bg-white p-6 border rounded-lg shadow-sm">
       <div className="flex items-center mb-6">
         <img
           src={user.photoURL || "/default-profile.png"}
