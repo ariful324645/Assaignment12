@@ -5,11 +5,11 @@ import { useNavigate } from "react-router";
 
 const MyProducts = () => {
   const [products, setProducts] = useState([]);
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext); // user: { email, role }
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user && user.email) {
+    if (user?.email) {
       fetchMyProducts();
     }
   }, [user]);
@@ -21,7 +21,7 @@ const MyProducts = () => {
       );
       setProducts(res.data);
     } catch (err) {
-      console.error("Error fetching my products:", err);
+      console.error("Error fetching products:", err);
     }
   };
 
@@ -38,6 +38,18 @@ const MyProducts = () => {
     navigate(`/dashboard/updateProduct/${productId}`);
   };
 
+  const handleSetStatus = async (productId, status) => {
+    try {
+      await axios.put(`http://localhost:3000/products/status/${productId}`, {
+        status,
+      });
+      alert(`Status set to ${status}`);
+      fetchMyProducts();
+    } catch (err) {
+      console.error("Failed to update status", err);
+    }
+  };
+
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">My Products</h2>
@@ -46,7 +58,7 @@ const MyProducts = () => {
           <thead>
             <tr className="bg-gray-300">
               <th className="border px-4 py-2">Product Name</th>
-              <th className="border px-4 py-2">Number of Votes</th>
+              <th className="border px-4 py-2">Votes</th>
               <th className="border px-4 py-2">Status</th>
               <th className="border px-4 py-2">Actions</th>
             </tr>
@@ -57,7 +69,40 @@ const MyProducts = () => {
                 <td className="border px-4 py-2">{product.name}</td>
                 <td className="border px-4 py-2">{product.votes || 0}</td>
                 <td className="border px-4 py-2">
-                  {product.status || "Pending"}
+                  <span
+                    className={`px-2 py-1 rounded text-white ${
+                      product.status === "Accepted"
+                        ? "bg-green-500"
+                        : product.status === "Rejected"
+                        ? "bg-red-500"
+                        : "bg-yellow-500"
+                    }`}
+                  >
+                    {product.status || "Pending"}
+                  </span>
+
+                  {/* Show status change buttons if user is moderator and status is Pending */}
+                  {user?.role === "moderator" &&
+                    product.status === "Pending" && (
+                      <div className="mt-2 space-x-2">
+                        <button
+                          onClick={() =>
+                            handleSetStatus(product._id, "Accepted")
+                          }
+                          className="bg-green-600 text-white px-2 py-1 rounded hover:bg-green-700 text-sm"
+                        >
+                          Accept
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleSetStatus(product._id, "Rejected")
+                          }
+                          className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700 text-sm"
+                        >
+                          Reject
+                        </button>
+                      </div>
+                    )}
                 </td>
                 <td className="border px-4 py-2 space-x-2">
                   <button

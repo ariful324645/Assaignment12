@@ -13,6 +13,7 @@ import Products from "../pages/Products";
 import ProductDetails from "../pages/Dashboard/ProductDetails";
 
 import UpdateProduct from "../pages/Dashboard/UpdateProduct";
+import ProductReviewQueue from "../pages/Modaretor/ProductReviewQueue";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
       {
         path: "updateProduct/:productId",
         Component: UpdateProduct,
+      },
+      {
+        path: "ProductReviewQueue",
+        Component: ProductReviewQueue,
       },
     ],
   },

@@ -107,7 +107,7 @@ const Products = () => {
                 </figure>
                 <div className="card-body">
                   <h2
-                    className="card-title text-blue-500 hover:underline cursor-pointer"
+                    className="card-title text-blue-500 underline cursor-pointer"
                     onClick={() => handleClick(product._id)}
                   >
                     {product.name}

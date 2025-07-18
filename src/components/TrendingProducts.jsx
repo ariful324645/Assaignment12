@@ -57,7 +57,7 @@ const TrendingProducts = () => {
               {/* Content */}
               <div className="flex-1 flex flex-col justify-between p-5 bg-base-100">
                 <h2
-                  className="text-lg md:text-xl font-bold text-primary mb-2 cursor-pointer hover:underline"
+                  className="text-lg md:text-xl font-bold text-primary mb-2 cursor-pointer underline"
                   onClick={() =>
                     user
                       ? navigate(`/productDetails/${product._id}`)

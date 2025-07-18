@@ -38,28 +38,83 @@ const DashBoardLayout = () => {
             </div>
           </Link>
           <ul className="menu bg-gray-200 text-base-content min-h-full w-80 p-4">
-            {role === "user" ? (
+            {role === "user" && (
               <>
-                <NavLink to="/dashboard">
-                  <li>Dashboard</li>
+                <NavLink
+                  to="addProduct"
+                  className={({ isActive }) =>
+                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                  }
+                >
+                  <li>Add Product</li>
                 </NavLink>
-                <NavLink to="addProduct">
-                  <li>AddProduct</li>
+                <NavLink
+                  to="myProducts"
+                  className={({ isActive }) =>
+                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                  }
+                >
+                  <li>My Products</li>
                 </NavLink>
-                <NavLink to="myProducts">
-                  <li>MyProducts</li>
-                </NavLink>
-                <NavLink to="myProfile">
-                  <li>MyProfile</li>
+                <NavLink
+                  to="myProfile"
+                  className={({ isActive }) =>
+                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                  }
+                >
+                  <li>My Profile</li>
                 </NavLink>
               </>
-            ) : (
+            )}
+
+            {/* Moderator Routes */}
+            {role === "moderator" && (
               <>
-                <NavLink to="/dashboard">
-                  <li>Dashboard</li>
+                <NavLink
+                  to="ProductReviewQueue"
+                  className={({ isActive }) =>
+                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                  }
+                >
+                  <li>Product Review Queue</li>
                 </NavLink>
-                <NavLink to="moderator">
-                  <li>Moderator</li>
+                <NavLink
+                  to="ReportedContents"
+                  className={({ isActive }) =>
+                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                  }
+                >
+                  <li>Reported Contents</li>
+                </NavLink>
+              </>
+            )}
+
+            {/* Admin Routes */}
+            {role === "admin" && (
+              <>
+                <NavLink
+                  to="statistics"
+                  className={({ isActive }) =>
+                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                  }
+                >
+                  <li>Statistics</li>
+                </NavLink>
+                <NavLink
+                  to="manageUsers"
+                  className={({ isActive }) =>
+                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                  }
+                >
+                  <li>Manage Users</li>
+                </NavLink>
+                <NavLink
+                  to="manageCoupons"
+                  className={({ isActive }) =>
+                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                  }
+                >
+                  <li>Manage Coupons</li>
                 </NavLink>
               </>
             )}
