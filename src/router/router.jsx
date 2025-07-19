@@ -6,18 +6,22 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import ErrorPage from "../components/ErrorPage";
 import DashBoardLayout from "../Layouts/DashBoardLayout";
-import addProduct from "../pages/Dashboard/addProduct";
-import MyProducts from "../pages/Dashboard/MyProducts";
-import MyProfile from "../pages/Dashboard/MyProfile";
+
 import Products from "../pages/Products";
 import ProductDetails from "../pages/Dashboard/ProductDetails";
 
 import UpdateProduct from "../pages/Dashboard/UpdateProduct";
-import ProductReviewQueue from "../pages/Modaretor/ProductReviewQueue";
+
 import ReportedContents from "../pages/Modaretor/ReportedContents";
+
+import ManageCoupons from "../pages/Admin/ManageCoupons";
+import PrivateRoute from "../context/PrivateRoute";
+import MyProfile from "../pages/Dashboard/MyProfile";
+import MyProducts from "../pages/Dashboard/MyProducts";
+import AddProduct from "../pages/Dashboard/addProduct";
+import ProductReviewQueue from "../pages/Modaretor/ProductReviewQueue";
 import ManageUsers from "../pages/Admin/ManageUsers";
 import Statistics from "../pages/Admin/Statistics";
-import ManageCoupons from "../pages/Admin/ManageCoupons";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -44,34 +48,53 @@ export const router = createBrowserRouter([
       },
       {
         path: "/productDetails/:id",
-        element: <ProductDetails></ProductDetails>,
+        element: (
+          <PrivateRoute>
+            {" "}
+            <ProductDetails></ProductDetails>
+          </PrivateRoute>
+        ),
       },
     ],
   },
   {
     path: "/dashboard",
-    element: <DashBoardLayout></DashBoardLayout>,
+    element: (
+      <PrivateRoute>
+        <DashBoardLayout></DashBoardLayout>
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "/dashboard",
-        Component: MyProducts,
+
+        Component: Statistics,
       },
       {
         path: "addProduct",
-        Component: addProduct,
+        element: (
+          <PrivateRoute>
+            <AddProduct></AddProduct>
+          </PrivateRoute>
+        ),
       },
       {
         path: "myProducts",
-        Component: MyProducts,
+        element: (
+          <PrivateRoute>
+            <MyProducts></MyProducts>{" "}
+          </PrivateRoute>
+        ),
       },
       // Moderator
-      {
-        path: "moderator",
-        element: <div>This is moderator Page</div>,
-      },
+
       {
         path: "myProfile",
-        Component: MyProfile,
+        element: (
+          <PrivateRoute>
+            <MyProfile></MyProfile>
+          </PrivateRoute>
+        ),
       },
       {
         path: "updateProduct/:productId",
@@ -79,23 +102,43 @@ export const router = createBrowserRouter([
       },
       {
         path: "ProductReviewQueue",
-        Component: ProductReviewQueue,
+        element: (
+          <PrivateRoute>
+            <ProductReviewQueue></ProductReviewQueue>
+          </PrivateRoute>
+        ),
       },
       {
         path: "reportedContents",
-        Component: ReportedContents,
+        element: (
+          <PrivateRoute>
+            <ReportedContents></ReportedContents>
+          </PrivateRoute>
+        ),
       },
       {
         path: "manageUsers",
-        Component: ManageUsers,
+        element: (
+          <PrivateRoute>
+            <ManageUsers></ManageUsers>
+          </PrivateRoute>
+        ),
       },
       {
         path: "statistics",
-        Component: Statistics,
+        element: (
+          <PrivateRoute>
+            <Statistics></Statistics>
+          </PrivateRoute>
+        ),
       },
       {
         path: "manageCoupons",
-        Component: ManageCoupons,
+        element: (
+          <PrivateRoute>
+            <ManageCoupons></ManageCoupons>
+          </PrivateRoute>
+        ),
       },
     ],
   },

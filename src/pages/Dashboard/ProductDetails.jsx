@@ -3,6 +3,7 @@ import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router";
+import Loading from "../../components/Loading";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -11,7 +12,7 @@ const ProductDetails = () => {
 
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
+
   const [newReview, setNewReview] = useState({ description: "", rating: 5 });
   const [reportReason, setReportReason] = useState("");
 
@@ -22,13 +23,10 @@ const ProductDetails = () => {
   /** Fetch product info */
   const fetchProduct = async () => {
     try {
-      setLoading(true);
       const res = await axios.get(`http://localhost:3000/products/${id}`);
       setProduct(res.data);
     } catch (err) {
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -111,18 +109,6 @@ const ProductDetails = () => {
       Swal.fire("Error", "Failed to post review.", "error");
     }
   };
-
-  /** Loading state */
-  if (loading) {
-    return <div className="text-center p-10">Loading...</div>;
-  }
-
-  /** Product not found */
-  if (!product) {
-    return (
-      <div className="text-center p-10 text-red-500">Product not found!</div>
-    );
-  }
 
   return (
     <div className="max-w-5xl mx-auto p-4 space-y-10">
