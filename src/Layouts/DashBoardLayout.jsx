@@ -2,6 +2,16 @@ import axios from "axios";
 import React, { use, useEffect, useState } from "react";
 import { Link, NavLink, Outlet } from "react-router";
 import { AuthContext } from "../context/AuthContext";
+import {
+  FaBoxes,
+  FaChartBar,
+  FaClipboardCheck,
+  FaFlag,
+  FaPlus,
+  FaTicketAlt,
+  FaUser,
+  FaUsers,
+} from "react-icons/fa";
 
 const DashBoardLayout = () => {
   const { user } = use(AuthContext);
@@ -37,31 +47,43 @@ const DashBoardLayout = () => {
               <span className="text-xl font-bold">AppOrbit</span>
             </div>
           </Link>
-          <ul className="menu bg-gray-200 text-base-content w-80 p-4">
+          <ul className="menu bg-gray-200 text-base-content w-80 p-4 space-y-2">
+            {/* User Routes */}
             {role === "user" && (
               <>
                 <NavLink
                   to="addProduct"
                   className={({ isActive }) =>
-                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                    isActive
+                      ? "flex items-center gap-2 text-white bg-[#00796b] p-2 rounded"
+                      : "flex items-center gap-2 p-2"
                   }
                 >
+                  <FaPlus />
                   <li>Add Product</li>
                 </NavLink>
+
                 <NavLink
                   to="myProducts"
                   className={({ isActive }) =>
-                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                    isActive
+                      ? "flex items-center gap-2 text-white bg-[#00796b] p-2 rounded"
+                      : "flex items-center gap-2 p-2"
                   }
                 >
+                  <FaBoxes />
                   <li>My Products</li>
                 </NavLink>
+
                 <NavLink
                   to="myProfile"
                   className={({ isActive }) =>
-                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                    isActive
+                      ? "flex items-center gap-2 text-white bg-[#00796b] p-2 rounded"
+                      : "flex items-center gap-2 p-2"
                   }
                 >
+                  <FaUser />
                   <li>My Profile</li>
                 </NavLink>
               </>
@@ -73,17 +95,24 @@ const DashBoardLayout = () => {
                 <NavLink
                   to="ProductReviewQueue"
                   className={({ isActive }) =>
-                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                    isActive
+                      ? "flex items-center gap-2 text-white bg-[#00796b] p-2 rounded"
+                      : "flex items-center gap-2 p-2"
                   }
                 >
+                  <FaClipboardCheck />
                   <li>Product Review Queue</li>
                 </NavLink>
+
                 <NavLink
                   to="ReportedContents"
                   className={({ isActive }) =>
-                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                    isActive
+                      ? "flex items-center gap-2 text-white bg-[#00796b] p-2 rounded"
+                      : "flex items-center gap-2 p-2"
                   }
                 >
+                  <FaFlag />
                   <li>Reported Contents</li>
                 </NavLink>
               </>
@@ -95,25 +124,36 @@ const DashBoardLayout = () => {
                 <NavLink
                   to="manageUsers"
                   className={({ isActive }) =>
-                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                    isActive
+                      ? "flex items-center gap-2 text-white bg-[#00796b] p-2 rounded"
+                      : "flex items-center gap-2 p-2"
                   }
                 >
+                  <FaUsers />
                   <li>Manage Users</li>
                 </NavLink>
+
                 <NavLink
                   to="statistics"
                   className={({ isActive }) =>
-                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                    isActive
+                      ? "flex items-center gap-2 text-white bg-[#00796b] p-2 rounded"
+                      : "flex items-center gap-2 p-2"
                   }
                 >
+                  <FaChartBar />
                   <li>Admin Statistics</li>
                 </NavLink>
+
                 <NavLink
                   to="manageCoupons"
                   className={({ isActive }) =>
-                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                    isActive
+                      ? "flex items-center gap-2 text-white bg-[#00796b] p-2 rounded"
+                      : "flex items-center gap-2 p-2"
                   }
                 >
+                  <FaTicketAlt />
                   <li>Manage Coupons</li>
                 </NavLink>
               </>

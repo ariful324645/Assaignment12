@@ -19,7 +19,7 @@ const Login = () => {
     userLogin(email, password)
       .then(async (result) => {
         const userInfo = {
-          password:password,
+          password: password,
           email: email,
           role: "user", //Default
           created_at: new Date().toISOString(),
@@ -52,70 +52,74 @@ const Login = () => {
       });
   };
   return (
-    <div className="flex mt-8 items-center justify-center">
-      <div className="w-full max-w-md p-8 space-y-3 rounded-xl bg-amber-200 ">
-        <h1 className="text-2xl font-bold text-center">Login Now!</h1>
-        <form
-          onSubmit={handleLogin}
-          noValidate=""
-          action=""
-          className="space-y-6"
-        >
-          <div className="space-y-1 text-sm">
-            <label
-              htmlFor="username"
-              className="block dark:text-gray-600 text-xl font-semibold"
-            >
+    <div className="min-h-screen px-4 py-10 flex flex-col-reverse lg:flex-row items-center justify-center gap-8">
+      {/* Lottie Animation */}
+      <div className="w-full lg:w-1/2 flex justify-center">
+        <Lottie
+          animationData={registerLotie}
+          loop
+          className="w-full max-w-sm md:max-w-md lg:max-w-lg"
+        />
+      </div>
+
+      {/* Login Form */}
+      <div className="w-full max-w-md bg-amber-200 rounded-xl p-6 md:p-8 shadow-xl">
+        <h1 className="text-2xl md:text-3xl font-bold text-center mb-4">
+          Login Now!
+        </h1>
+
+        <form onSubmit={handleLogin} className="space-y-6">
+          {/* Email */}
+          <div>
+            <label className="block text-gray-800 text-lg font-semibold mb-1">
               Email
             </label>
             <input
               type="text"
               name="email"
-              id="username"
-              placeholder="name"
-              className="w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+              placeholder="Enter your email"
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
             />
           </div>
-          <div className="space-y-1 text-sm">
-            <label
-              htmlFor="password"
-              className="block dark:text-gray-600 text-xl font-semibold"
-            >
+
+          {/* Password */}
+          <div>
+            <label className="block text-gray-800 text-lg font-semibold mb-1">
               Password
             </label>
             <input
               type="password"
               name="password"
-              id="password"
-              placeholder="Password"
-              className="w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+              placeholder="Enter your password"
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              required
             />
           </div>
+
+          {/* Submit Button */}
           <button
             type="submit"
-            className="block w-full p-3 text-center rounded-sm dark:text-gray-50 dark:bg-violet-600"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-md transition"
           >
             Login
           </button>
-          <p className="text-xs mt-3 text-center sm:px-6 dark:text-gray-600">
-            Don't have an account?
-            <Link to="/register">Registration</Link>
+
+          {/* Register Link */}
+          <p className="text-sm text-center text-gray-700 mt-4">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="text-indigo-600 font-medium hover:underline"
+            >
+              Register
+            </Link>
           </p>
         </form>
-        <div className="flex items-center space-x-1">
-          <div className="flex-1 h-px sm:w-16 dark:bg-gray-300"></div>
-          <div className="w-full">
-            <SocialLogin></SocialLogin>
-          </div>
-          <div className="flex-1 h-px sm:w-16 dark:bg-gray-300"></div>
+
+        <div className="mt-4">
+          <SocialLogin />
         </div>
-      </div>
-      <div>
-        <Lottie
-          style={{ width: "600px" }}
-          animationData={registerLotie}
-          loop={true}
-        ></Lottie>
       </div>
     </div>
   );

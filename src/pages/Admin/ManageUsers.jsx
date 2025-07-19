@@ -64,11 +64,14 @@ const ManageUsers = () => {
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-semibold mb-4">Manage Users</h2>
+    <div className="p-4 md:p-6">
+      <h2 className="text-xl md:text-2xl font-semibold mb-4 text-center md:text-left">
+        Manage Users
+      </h2>
+
       <div className="overflow-x-auto">
-        <table className="table w-full border">
-          <thead className="bg-gray-100">
+        <table className="table w-full text-sm md:text-base border">
+          <thead className="bg-gray-100 text-[13px] md:text-base">
             <tr>
               <th>SL</th>
               <th>User Name</th>
@@ -83,13 +86,15 @@ const ManageUsers = () => {
               <tr key={user._id} className="hover">
                 <td>{index + 1}</td>
                 <td>{user.name || "N/A"}</td>
-                <td>{user.email}</td>
+                <td className="break-words max-w-[120px] md:max-w-none">
+                  {user.email}
+                </td>
                 <td className="capitalize">{user.role || "user"}</td>
                 <td>
                   {user.role !== "moderator" && (
                     <button
                       onClick={() => handleMakeModerator(user._id)}
-                      className="btn btn-sm btn-outline btn-warning"
+                      className="btn btn-xs sm:btn-sm md:btn-sm btn-outline btn-warning"
                     >
                       Make Moderator
                     </button>
@@ -99,7 +104,7 @@ const ManageUsers = () => {
                   {user.role !== "admin" && (
                     <button
                       onClick={() => handleMakeAdmin(user._id)}
-                      className="btn btn-sm btn-outline btn-success"
+                      className="btn btn-xs sm:btn-sm md:btn-sm btn-outline btn-success"
                     >
                       Make Admin
                     </button>
@@ -107,6 +112,7 @@ const ManageUsers = () => {
                 </td>
               </tr>
             ))}
+
             {users.length === 0 && (
               <tr>
                 <td colSpan="6" className="text-center py-4">

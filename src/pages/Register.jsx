@@ -59,63 +59,88 @@ const Register = () => {
       });
   };
   return (
-    <div className="flex mt-10 items-center gap-5 justify-center">
-      <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-        <div className="card-body">
-          <form onSubmit={handleRegister}>
-            <h1 className="text-2xl font-bold text-center">Register Now!</h1>
-            {/* name */}
+    <div className="min-h-screen px-4 py-10 flex flex-col-reverse lg:flex-row items-center justify-center gap-8">
+      {/* Lottie Animation */}
+      <div className="w-full lg:w-1/2 flex justify-center">
+        <Lottie
+          animationData={loginLotie}
+          loop
+          className="w-full max-w-sm md:max-w-md lg:max-w-lg"
+        />
+      </div>
+
+      {/* Register Form */}
+      <div className="w-full  max-w-sm bg-base-100 shadow-2xl rounded-xl p-6 md:px-8">
+        <form onSubmit={handleRegister} className="space-y-4">
+          <h1 className="text-2xl md:text-3xl font-bold text-center mb-4">
+            Register Now!
+          </h1>
+
+          {/* Name */}
+          <div>
             <label className="label text-xl font-semibold">Name</label>
             <input
               type="text"
-              className="input"
               name="name"
+              className="input input-bordered w-full"
               placeholder="Name"
+              required
             />
-            {/* email */}
+          </div>
+
+          {/* Email */}
+          <div>
             <label className="label text-xl font-semibold">Email</label>
             <input
               type="email"
               name="email"
-              className="input"
+              className="input input-bordered w-full"
               placeholder="Email"
+              required
             />
-            {/* photourl */}
-            <label className="label text-xl font-semibold">Photo</label>
+          </div>
+
+          {/* Photo */}
+          <div>
+            <label className="label text-xl font-semibold">Photo URL</label>
             <input
-              type="URL"
+              type="url"
               name="photo"
-              className="input"
+              className="input input-bordered w-full"
               placeholder="Photo URL"
             />
-            {/* pass */}
+          </div>
+
+          {/* Password */}
+          <div>
             <label className="label text-xl font-semibold">Password</label>
             <input
               type="password"
               name="password"
-              className="input"
+              className="input input-bordered w-full"
               placeholder="Password"
+              required
             />
-
-            <button type="submit" className="btn w-full btn-primary mt-4">
-              Registration
-            </button>
-            <p className="text-xs mt-3 text-center sm:px-6 dark:text-gray-600">
-              Don't have an account?
-              <Link to="/login">Login</Link>
-            </p>
-          </form>
-          <div className=" w-full">
-            <SocialLogin></SocialLogin>
           </div>
+
+          {/* Submit Button */}
+          <button type="submit" className="btn btn-primary w-full mt-2">
+            Registration
+          </button>
+
+          {/* Login Link */}
+          <p className="text-sm mt-3 text-center text-gray-700">
+            Already have an account?{" "}
+            <Link to="/login" className="text-indigo-600 hover:underline">
+              Login
+            </Link>
+          </p>
+        </form>
+
+        {/* Social Login */}
+        <div className="mt-4">
+          <SocialLogin />
         </div>
-      </div>
-      <div>
-        <Lottie
-          style={{ width: "600px" }}
-          animationData={loginLotie}
-          loop={true}
-        ></Lottie>
       </div>
     </div>
   );

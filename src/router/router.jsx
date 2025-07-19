@@ -32,7 +32,11 @@ export const router = createBrowserRouter([
       {
         path: "/",
         index: true,
-        Component: Home,
+        element: (
+          <PrivateRoute>
+            <Home></Home>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/login",
@@ -44,13 +48,16 @@ export const router = createBrowserRouter([
       },
       {
         path: "/products",
-        element: <Products></Products>,
+        element: (
+          <PrivateRoute>
+            <Products></Products>{" "}
+          </PrivateRoute>
+        ),
       },
       {
         path: "/productDetails/:id",
         element: (
           <PrivateRoute>
-            {" "}
             <ProductDetails></ProductDetails>
           </PrivateRoute>
         ),
