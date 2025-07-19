@@ -33,7 +33,7 @@ const Statistics = () => {
 
       {/* Pie Chart */}
       <div className="flex justify-center">
-        <PieChart width={500} height={400}>
+        <PieChart width={500} height={500}>
           <Pie
             data={pieData}
             cx="50%"
