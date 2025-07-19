@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -21,7 +22,14 @@ const ManageUsers = () => {
   const handleMakeAdmin = async (id) => {
     try {
       await axios.patch(`http://localhost:3000/users/make-admin/${id}`);
-      alert("User promoted to Admin");
+     Swal.fire({
+       position: "center",
+       icon: "success",
+       title: "User promoted to Admin",
+       showConfirmButton: false,
+       timer: 1500,
+     });
+
       // Update local state
       setUsers(
         users.map((user) =>
@@ -37,7 +45,14 @@ const ManageUsers = () => {
   const handleMakeModerator = async (id) => {
     try {
       await axios.patch(`http://localhost:3000/users/make-moderator/${id}`);
-      alert("User promoted to Moderator");
+     Swal.fire({
+       position: "center",
+       icon: "success",
+       title: "User promoted to Moderator",
+       showConfirmButton: false,
+       timer: 1500,
+     });
+
       setUsers(
         users.map((user) =>
           user._id === id ? { ...user, role: "moderator" } : user
