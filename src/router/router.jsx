@@ -16,6 +16,7 @@ import UpdateProduct from "../pages/Dashboard/UpdateProduct";
 import ProductReviewQueue from "../pages/Modaretor/ProductReviewQueue";
 import ReportedContents from "../pages/Modaretor/ReportedContents";
 import ManageUsers from "../pages/Admin/ManageUsers";
+import Statistics from "../pages/Admin/Statistics";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -86,6 +87,10 @@ export const router = createBrowserRouter([
       {
         path:'manageUsers',
         Component:ManageUsers
+      },
+      {
+        path:'statistics',
+        Component:Statistics
       }
     ],
   },

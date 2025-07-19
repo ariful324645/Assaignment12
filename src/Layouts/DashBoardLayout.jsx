@@ -37,7 +37,7 @@ const DashBoardLayout = () => {
               <span className="text-xl font-bold">AppOrbit</span>
             </div>
           </Link>
-          <ul className="menu bg-gray-200 text-base-content min-h-full w-80 p-4">
+          <ul className="menu bg-gray-200 text-base-content w-80 p-4">
             {role === "user" && (
               <>
                 <NavLink
@@ -93,20 +93,20 @@ const DashBoardLayout = () => {
             {role === "admin" && (
               <>
                 <NavLink
-                  to="statistics"
-                  className={({ isActive }) =>
-                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
-                  }
-                >
-                  <li>Statistics</li>
-                </NavLink>
-                <NavLink
                   to="manageUsers"
                   className={({ isActive }) =>
                     isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
                   }
                 >
                   <li>Manage Users</li>
+                </NavLink>
+                <NavLink
+                  to="statistics"
+                  className={({ isActive }) =>
+                    isActive ? "text-white bg-[#00796b] p-2 rounded" : "p-2"
+                  }
+                >
+                  <li>Admin Statistics</li>
                 </NavLink>
                 <NavLink
                   to="manageCoupons"
