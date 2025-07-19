@@ -15,6 +15,7 @@ import ProductDetails from "../pages/Dashboard/ProductDetails";
 import UpdateProduct from "../pages/Dashboard/UpdateProduct";
 import ProductReviewQueue from "../pages/Modaretor/ProductReviewQueue";
 import ReportedContents from "../pages/Modaretor/ReportedContents";
+import ManageUsers from "../pages/Admin/ManageUsers";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -82,6 +83,10 @@ export const router = createBrowserRouter([
         path: "reportedContents",
         Component: ReportedContents,
       },
+      {
+        path:'manageUsers',
+        Component:ManageUsers
+      }
     ],
   },
 ]);
