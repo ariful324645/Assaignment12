@@ -4,12 +4,13 @@ import { FaThumbsUp } from "react-icons/fa";
 import { AuthContext } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router";
 import useAxiosSecure from "../pages/Hooks/useAxiosSecure";
+import Loading from "./Loading";
 
 const FeaturedProducts = () => {
   const [products, setProducts] = useState([]);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const axiosSecure=useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
   // Fetch products
   useEffect(() => {
@@ -51,6 +52,7 @@ const FeaturedProducts = () => {
       navigate("/login");
     }
   };
+  
   return (
     <div className="w-11/12 mx-auto">
       <h1 className="text-4xl font-extrabold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">

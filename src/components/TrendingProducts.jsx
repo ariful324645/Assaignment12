@@ -24,7 +24,7 @@ const TrendingProducts = () => {
   };
 
   return (
-    <div className="w-11/12 mx-auto">
+    <div className="w-11/12 mt-8 mx-auto">
       <div className="px-4 py-12 bg-gradient-to-b from-base-200 to-base-100 min-h-screen">
         <h2 className="text-4xl font-extrabold mb-10 text-center bg-gradient-to-r from-yellow-400 to-red-500 bg-clip-text text-transparent">
           🚀 Trending Products

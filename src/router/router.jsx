@@ -22,6 +22,7 @@ import AddProduct from "../pages/Dashboard/addProduct";
 import ProductReviewQueue from "../pages/Modaretor/ProductReviewQueue";
 import ManageUsers from "../pages/Admin/ManageUsers";
 import Statistics from "../pages/Admin/Statistics";
+import Loading from "../components/Loading";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -32,7 +33,11 @@ export const router = createBrowserRouter([
       {
         path: "/",
         index: true,
-        element: <Home></Home>,
+        element: (
+          // <PrivateRoute>
+          <Home></Home>
+          // </PrivateRoute>
+        ),
       },
       {
         path: "/login",
@@ -44,7 +49,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/products",
-        element: <Products></Products>,
+        element: (
+          // <PrivateRoute>
+          <Products></Products>
+          // </PrivateRoute>
+        ),
       },
       {
         path: "/productDetails/:id",

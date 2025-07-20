@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
 
 const CouponSlider = () => {
   const [coupons, setCoupons] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const axiosSecure=useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
   // Fetch valid coupons
   useEffect(() => {
@@ -34,33 +33,38 @@ const CouponSlider = () => {
   const current = coupons[currentIndex];
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-10">
-      <h2 className="text-3xl font-bold text-center mb-6 text-indigo-700">
-        💥 Exclusive Membership Coupons
-      </h2>
-      <div className="bg-white shadow-lg rounded-xl p-6 border border-gray-200 text-center">
-        <h3 className="text-2xl font-semibold text-purple-600">
-          {current.code}
-        </h3>
-        <p className="text-gray-800 mt-2">
-          💸 Discount: <strong>{current.discountAmount}%</strong>
-        </p>
-        <p className="text-gray-700">
-          📅 Expires on: {new Date(current.expiryDate).toLocaleDateString()}
-        </p>
-        <p className="text-gray-600 italic mt-2">📝 {current.description}</p>
-      </div>
+    <div className="w-11/12 mx-auto my-10 rounded-xl shadow-xl bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] bg-opacity-90">
+      <div className="max-w-3xl mx-auto px-6 py-12">
+        <h2 className="text-3xl font-bold text-center mb-6 text-cyan-300 drop-shadow-md">
+          💥 Exclusive Membership Coupons
+        </h2>
 
-      {/* Dots for navigation */}
-      <div className="flex justify-center mt-4 space-x-2">
-        {coupons.map((_, index) => (
-          <div
-            key={index}
-            className={`w-3 h-3 rounded-full ${
-              index === currentIndex ? "bg-indigo-600" : "bg-gray-300"
-            }`}
-          />
-        ))}
+        <div className="bg-white shadow-xl rounded-2xl p-6 text-center border border-slate-200">
+          <h3 className="text-2xl font-semibold text-purple-600">
+            {current.code}
+          </h3>
+          <p className="text-gray-800 mt-2">
+            💸 Discount: <strong>{current.discountAmount}%</strong>
+          </p>
+          <p className="text-gray-700">
+            📅 Expires on: {new Date(current.expiryDate).toLocaleDateString()}
+          </p>
+          <p className="text-gray-600 italic mt-2">📝 {current.description}</p>
+        </div>
+
+        {/* Dots */}
+        <div className="flex justify-center mt-4 space-x-2">
+          {coupons.map((_, index) => (
+            <div
+              key={index}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentIndex
+                  ? "bg-cyan-400 shadow-md shadow-cyan-400 scale-110"
+                  : "bg-gray-300"
+              }`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

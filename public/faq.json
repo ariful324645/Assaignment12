@@ -1,0 +1,28 @@
+[
+  {
+    "question": "What is AppOrbit?",
+    "answer": "AppOrbit is a platform where users can launch, showcase, and manage their tech products like apps, AI tools, and games efficiently."
+  },
+ 
+  {
+    "question": "What types of products can I post?",
+    "answer": "You can post Web Apps, Mobile Apps, AI Tools, SaaS Products, Software, Games, and other tech-related tools."
+  },
+  {
+    "question": "Is AppOrbit free to use?",
+    "answer": "Yes, AppOrbit offers free access to core features. Premium features can be unlocked through a subscription."
+  },
+  {
+    "question": "What happens after I submit a product?",
+    "answer": "Your product goes through a moderation process. If accepted, it will be publicly listed and users can upvote and review it."
+  },
+  {
+    "question": "Can users review or upvote my product?",
+    "answer": "Yes, registered users can upvote and leave reviews on your product page. This helps boost product visibility."
+  },
+  {
+    "question": "What is the benefit of premium membership?",
+    "answer": "Premium users can add unlimited products, get early access to new features, and access analytics for their product performance."
+  }
+
+]
