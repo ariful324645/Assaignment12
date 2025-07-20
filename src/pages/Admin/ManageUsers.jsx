@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
+  const axiosSecure=useAxiosSecure()
 
   // Fetch all users
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/users");
+        const res = await axiosSecure.get("/users");
         setUsers(res.data);
       } catch (err) {
         console.error("Error fetching users:", err);
@@ -21,7 +23,7 @@ const ManageUsers = () => {
   // Make user an Admin
   const handleMakeAdmin = async (id) => {
     try {
-      await axios.patch(`http://localhost:3000/users/make-admin/${id}`);
+      await axiosSecure.patch(`/users/make-admin/${id}`);
      Swal.fire({
        position: "center",
        icon: "success",
@@ -44,7 +46,7 @@ const ManageUsers = () => {
   // Make user a Moderator
   const handleMakeModerator = async (id) => {
     try {
-      await axios.patch(`http://localhost:3000/users/make-moderator/${id}`);
+      await axiosSecure.patch(`/users/make-moderator/${id}`);
      Swal.fire({
        position: "center",
        icon: "success",

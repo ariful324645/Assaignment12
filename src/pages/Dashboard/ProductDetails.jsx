@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
+
 import { AuthContext } from "../../context/AuthContext";
 import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router";
 import Loading from "../../components/Loading";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure();
 
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]);
@@ -23,7 +25,7 @@ const ProductDetails = () => {
   /** Fetch product info */
   const fetchProduct = async () => {
     try {
-      const res = await axios.get(`http://localhost:3000/products/${id}`);
+      const res = await axiosSecure.get(`/products/${id}`);
       setProduct(res.data);
     } catch (err) {
       console.error(err);
@@ -33,7 +35,7 @@ const ProductDetails = () => {
   /** Fetch reviews for product */
   const fetchReviews = async () => {
     try {
-      const res = await axios.get(`http://localhost:3000/reviews/${id}`);
+      const res = await axiosSecure.get(`/reviews/${id}`);
       setReviews(res.data);
     } catch (err) {
       console.error(err);
@@ -52,7 +54,7 @@ const ProductDetails = () => {
   const handleReport = async () => {
     if (!user) return navigate("/login");
 
-    await axios.post(`http://localhost:3000/products/${id}/report`, {
+    await axiosSecure.post(`/products/${id}/report`, {
       userId: user.email,
       reason: reportReason.trim(),
     });
@@ -65,10 +67,9 @@ const ProductDetails = () => {
   const handleUpvote = async () => {
     if (!user) return navigate("/login");
     try {
-      const res = await axios.post(
-        `http://localhost:3000/products/featured/${id}/upvote`,
-        { userId: user.email }
-      );
+      const res = await axiosSecure.post(`/products/featured/${id}/upvote`, {
+        userId: user.email,
+      });
       setProduct(res.data);
     } catch (err) {
       console.error(err);
@@ -100,7 +101,7 @@ const ProductDetails = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:3000/reviews", reviewData);
+      const res = await axiosSecure.post("/reviews", reviewData);
       setReviews((prev) => [res.data, ...prev]);
       setNewReview({ description: "", rating: 5 });
       Swal.fire("Success", "Review posted successfully!", "success");

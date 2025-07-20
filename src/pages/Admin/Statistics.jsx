@@ -8,19 +8,22 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
+import Loading from "../../components/Loading";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const Statistics = () => {
   const [stats, setStats] = useState(null);
+  const axiosSecure=useAxiosSecure()
 
   useEffect(() => {
-    axios.get("http://localhost:3000/admin-stats").then((res) => {
+    axiosSecure.get("/admin-stats").then((res) => {
       setStats(res.data);
     });
   }, []);
 
-  if (!stats) return <p className="text-center mt-10">Loading...</p>;
+  if (!stats) return <Loading></Loading>
 
   const pieData = [
     { name: "Accepted Products", value: stats.acceptedProducts },

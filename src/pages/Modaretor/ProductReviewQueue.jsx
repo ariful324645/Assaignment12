@@ -2,14 +2,16 @@ import React, { use, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
 
 const ProductReviewQueue = () => {
   const { user } = use(AuthContext);
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
+  const axiosSecure=useAxiosSecure()
 
   const fetchProducts = async () => {
-    const res = await axios.get("http://localhost:3000/products");
+    const res = await axiosSecure.get("/products");
     setProducts(res.data);
   };
 
@@ -18,7 +20,7 @@ const ProductReviewQueue = () => {
   }, []);
 
   const handleAction = async (id, action) => {
-    await axios.patch(`http://localhost:3000/products/${action}/${id}`);
+    await axiosSecure.patch(`/products/${action}/${id}`);
     fetchProducts();
   };
 

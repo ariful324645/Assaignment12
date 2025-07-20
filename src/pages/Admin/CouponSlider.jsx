@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
 
 const CouponSlider = () => {
   const [coupons, setCoupons] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const axiosSecure=useAxiosSecure()
 
   // Fetch valid coupons
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/valid-coupons")
+    axiosSecure
+      .get("/valid-coupons")
       .then((res) => setCoupons(res.data))
       .catch((err) => console.error("Error fetching coupons:", err));
   }, []);

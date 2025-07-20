@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
+
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
 
 const MyProducts = () => {
   const [products, setProducts] = useState([]);
   const { user } = useContext(AuthContext); // user: { email, role }
   const navigate = useNavigate();
+  const axiosSecure=useAxiosSecure()
 
   useEffect(() => {
     if (user?.email) {
@@ -16,8 +18,8 @@ const MyProducts = () => {
 
   const fetchMyProducts = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:3000/products/users/${user.email}`
+      const res = await axiosSecure.get(
+        `/products/users/${user.email}`
       );
       setProducts(res.data);
     } catch (err) {
@@ -27,7 +29,7 @@ const MyProducts = () => {
 
   const handleDelete = async (productId) => {
     try {
-      await axios.delete(`http://localhost:3000/products/${productId}`);
+      await axiosSecure.delete(`/products/${productId}`);
       setProducts(products.filter((p) => p._id !== productId));
     } catch (err) {
       console.error("Error deleting product:", err);
@@ -40,7 +42,7 @@ const MyProducts = () => {
 
   const handleSetStatus = async (productId, status) => {
     try {
-      await axios.put(`http://localhost:3000/products/status/${productId}`, {
+      await axiosSecure.put(`/products/status/${productId}`, {
         status,
       });
       alert(`Status set to ${status}`);

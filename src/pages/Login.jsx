@@ -5,11 +5,13 @@ import Lottie from "lottie-react";
 import registerLotie from "../assets/loties/lotieLogin.json";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
-import axios from "axios";
+
+import useAxiosSecure from "./Hooks/useAxiosSecure";
 
 const Login = () => {
   const navigate = useNavigate();
   const { user, userLogin } = use(AuthContext);
+  const axiosSecure = useAxiosSecure();
   const handleLogin = (e) => {
     e.preventDefault();
 
@@ -25,10 +27,7 @@ const Login = () => {
           created_at: new Date().toISOString(),
           last_login: new Date().toISOString(),
         };
-        const userRes = await axios.post(
-          "http://localhost:3000/users",
-          userInfo
-        );
+        const userRes = await axiosSecure.post("/users", userInfo);
         console.log(userRes);
 
         console.log(result);

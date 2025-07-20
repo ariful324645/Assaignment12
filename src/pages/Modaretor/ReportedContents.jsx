@@ -4,11 +4,13 @@ import axios from "axios";
 import { AuthContext } from "../../context/AuthContext"; // adjust path as needed
 import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
 
 const ReportedContents = () => {
   const [reportedProducts, setReportedProducts] = useState([]);
   const navigate = useNavigate();
   const { user } = use(AuthContext);
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
     fetchReportedProducts();
@@ -16,7 +18,7 @@ const ReportedContents = () => {
 
   const fetchReportedProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/reported-products");
+      const res = await axiosSecure.get("/reported-products");
       setReportedProducts(res.data);
     } catch (error) {
       console.error("Error fetching reported products:", error);
@@ -40,7 +42,7 @@ const ReportedContents = () => {
 
     if (result.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:3000/products/${id}`);
+        await axiosSecure.delete(`/products/${id}`);
         setReportedProducts((prev) => prev.filter((item) => item._id !== id));
 
         Swal.fire("Deleted!", "Product has been deleted.", "success");

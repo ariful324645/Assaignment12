@@ -2,10 +2,12 @@ import React, { use } from "react";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
 import { Navigate, useNavigate } from "react-router";
-import axios from "axios";
+
+import useAxiosSecure from "../pages/Hooks/useAxiosSecure";
 
 const SocialLogin = () => {
   const navigate = useNavigate();
+  const axiosSecure=useAxiosSecure()
   const { googleLogin } = use(AuthContext);
   const handleGoogle = () => {
     googleLogin()
@@ -17,8 +19,8 @@ const SocialLogin = () => {
           created_at: new Date().toISOString(),
           last_login: new Date().toISOString(),
         };
-        const userRes = await axios.post(
-          "http://localhost:3000/users",
+        const userRes = await axiosSecure.post(
+          "/users",
           userInfo
         );
         console.log("user update info", userRes.data);

@@ -7,11 +7,13 @@ import { AuthContext } from "../../context/AuthContext";
 import Swal from "sweetalert2";
 import TagsComponent from "./TagsComponent";
 import { useNavigate } from "react-router";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
 
 export default function AddProduct() {
   const [tags, setTags] = useState([]);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const axiosSecure=useAxiosSecure()
 
   const {
     register,
@@ -46,7 +48,7 @@ export default function AddProduct() {
     };
 
     try {
-      await axios.post("http://localhost:3000/products", newProduct);
+      await axiosSecure.post("/products", newProduct);
       toast.success("Product added successfully!");
       reset();
       setTags([]);

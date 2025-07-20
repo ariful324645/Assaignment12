@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+
 import Swal from "sweetalert2";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
 
 const ManageCoupons = () => {
   const [coupons, setCoupons] = useState([]);
   const [editingCoupon, setEditingCoupon] = useState(null);
+  const axiosSecure=useAxiosSecure()
 
   // Load all coupons from server
   useEffect(() => {
@@ -13,7 +15,7 @@ const ManageCoupons = () => {
 
   const fetchCoupons = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/coupons");
+      const res = await axiosSecure.get("/coupons");
       setCoupons(res.data);
     } catch (err) {
       console.error("Error loading coupons", err);
@@ -33,13 +35,13 @@ const ManageCoupons = () => {
 
     try {
       if (editingCoupon) {
-        await axios.put(
-          `http://localhost:3000/coupons/${editingCoupon._id}`,
+        await axiosSecure.put(
+          `/coupons/${editingCoupon._id}`,
           newCoupon
         );
         Swal.fire("Updated!", "Coupon updated successfully.", "success");
       } else {
-        await axios.post("http://localhost:3000/coupons", newCoupon);
+        await axiosSecure.post("/coupons", newCoupon);
         Swal.fire("Added!", "Coupon added successfully.", "success");
       }
 
@@ -63,7 +65,7 @@ const ManageCoupons = () => {
 
     if (confirm.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:3000/coupons/${id}`);
+        await axiosSecure.delete(`/coupons/${id}`);
         Swal.fire("Deleted!", "Coupon has been deleted.", "success");
         fetchCoupons();
       } catch (err) {

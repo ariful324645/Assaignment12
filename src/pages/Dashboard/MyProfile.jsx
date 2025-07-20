@@ -1,6 +1,4 @@
-// MyProfile.jsx
 import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   Elements,
@@ -9,30 +7,29 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { AuthContext } from "../../context/AuthContext";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
 
 const stripePromise = loadStripe(import.meta.env.VITE_payment_key);
 
-// CheckoutForm
+// CheckoutForm Component
+
 const CheckoutForm = ({ user, onSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [clientSecret, setClientSecret] = useState("");
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
-
   const [error, setError] = useState("");
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
     if (!user?.email) return;
     const fetchPaymentIntent = async () => {
       try {
-        const res = await axios.post(
-          "http://localhost:3000/create-payment-intent",
-          {
-            email: user.email,
-            couponCode,
-          }
-        );
+        const res = await axiosSecure.post("/create-payment-intent", {
+          email: user.email,
+          couponCode,
+        });
         setClientSecret(res.data.clientSecret);
         setDiscount(res.data.discount || 0);
         setError("");
@@ -45,9 +42,7 @@ const CheckoutForm = ({ user, onSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   
     const card = elements.getElement(CardElement);
-
     const result = await stripe.confirmCardPayment(clientSecret, {
       payment_method: { card },
     });
@@ -55,10 +50,9 @@ const CheckoutForm = ({ user, onSuccess }) => {
     if (result.error) {
       setError(result.error.message);
     } else if (result.paymentIntent.status === "succeeded") {
-      await axios.patch(`http://localhost:3000/user-subscribe/${user.email}`);
+      await axiosSecure.patch(`/user-subscribe/${user.email}`);
       onSuccess();
     }
-    
   };
 
   return (
@@ -79,25 +73,29 @@ const CheckoutForm = ({ user, onSuccess }) => {
         type="submit"
         disabled={!stripe}
         className="w-full bg-blue-600 text-white py-2 rounded"
-      ></button>
+      >
+        Pay ${10 - discount}
+      </button>
     </form>
   );
 };
 
-// MyProfile
+// MyProfile Component
+
 const MyProfile = () => {
   const { user } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure(); // ✅ Now properly used
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (user?.email) {
-      axios
-        .get(`http://localhost:3000/user-subscribe/${user.email}`)
+      axiosSecure
+        .get(`/user-subscribe/${user.email}`)
         .then((res) => setIsSubscribed(res.data.isSubscribed))
         .catch(() => setIsSubscribed(false));
     }
-  }, [user?.email]);
+  }, [user?.email, axiosSecure]);
 
   const onPaymentSuccess = () => {
     setIsSubscribed(true);
@@ -134,7 +132,7 @@ const MyProfile = () => {
       )}
 
       {showModal && (
-        <div className="fixed inset-0 bg-[#e6fff7] bg-opacity-40 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded shadow-lg w-full max-w-md relative">
             <button
               className="absolute top-2 right-2 text-red-600 text-xl"

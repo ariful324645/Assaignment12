@@ -1,18 +1,20 @@
 import React, { useEffect, useState, useContext, use } from "react";
-import axios from "axios";
+
 import { FaThumbsUp } from "react-icons/fa";
 import { AuthContext } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router";
+import useAxiosSecure from "../pages/Hooks/useAxiosSecure";
 
 const FeaturedProducts = () => {
   const [products, setProducts] = useState([]);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const axiosSecure=useAxiosSecure()
 
   // Fetch products
   useEffect(() => {
     const fetchProducts = async () => {
-      const res = await axios.get("http://localhost:3000/products/featured");
+      const res = await axiosSecure.get("/products/featured");
       setProducts(res.data);
     };
 
@@ -23,8 +25,8 @@ const FeaturedProducts = () => {
   const handleUpvote = async (productId) => {
     if (!user) return navigate("/login");
     try {
-      const res = await axios.post(
-        `http://localhost:3000/products/featured/${productId}/upvote`,
+      const res = await axiosSecure.post(
+        `/products/featured/${productId}/upvote`,
         { userId: user.email }
       );
 

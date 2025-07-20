@@ -1,13 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
+
 import { FaThumbsUp } from "react-icons/fa";
 import { AuthContext } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router";
+import useAxiosSecure from "../pages/Hooks/useAxiosSecure";
+
 
 const TrendingProducts = () => {
   const [trendingProducts, setTrendingProducts] = useState([]);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const axiosSecure=useAxiosSecure()
 
   // Fetch trending products
   useEffect(() => {
@@ -15,7 +18,7 @@ const TrendingProducts = () => {
   }, []);
 
   const fetchTrending = async () => {
-    const res = await axios.get("http://localhost:3000/products/trending");
+    const res = await axiosSecure.get("/products/trending");
     const sorted = res.data.sort((a, b) => b.votes - a.votes);
     setTrendingProducts(sorted); 
   };

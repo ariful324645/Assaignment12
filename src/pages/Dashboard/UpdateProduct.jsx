@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
 
 const UpdateProduct = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
   const [product, setProduct] = useState({
     name: "",
@@ -18,9 +20,7 @@ const UpdateProduct = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:3000/products/${productId}`
-        );
+        const res = await axiosSecure.get(`/products/${productId}`);
         setProduct(res.data);
       } catch (err) {
         console.error("Error fetching product:", err);
@@ -43,8 +43,8 @@ const UpdateProduct = () => {
       const productToUpdate = { ...product };
       delete productToUpdate._id;
 
-      const res = await axios.put(
-        `http://localhost:3000/products/${productId}`,
+      const res = await axiosSecure.put(
+        `/products/${productId}`,
         productToUpdate
       );
 
