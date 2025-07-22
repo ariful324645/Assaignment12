@@ -61,7 +61,7 @@ const Register = () => {
       });
   };
   return (
-    <div className="min-h-screen px-4 py-10 flex flex-col-reverse lg:flex-row items-center justify-center gap-8">
+    <div className="min-h-screen px-4 py-10 flex flex-col-reverse lg:flex-row-reverse items-center justify-center gap-8">
       {/* Lottie Animation */}
       <div className="w-full lg:w-1/2 flex justify-center">
         <Lottie

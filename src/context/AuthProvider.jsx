@@ -28,13 +28,13 @@ const AuthProvider = ({ children }) => {
     return signInWithPopup(auth, provider);
   };
   const logOut = () => {
-    setLoading(false)
+    setLoading(false);
     return signOut(auth);
   };
-  const updateUser=(updatedData)=>{
-    setLoading(true)
-    return updateProfile(auth.currentUser,updatedData)
-  }
+  const updateUser = (updatedData) => {
+    setLoading(true);
+    return updateProfile(auth.currentUser, updatedData);
+  };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
@@ -51,7 +51,6 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const AuthInfo = {
-
     user,
     loading,
     setLoading,

@@ -23,7 +23,7 @@ const Products = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await axiosSecure.get("/products");
+      const res = await axiosSecure.get("/products/allProducts");
 
       // const sorted = res.data.sort((a, b) => b.votes - a.votes);
       setAllProducts(res.data);

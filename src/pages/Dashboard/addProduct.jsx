@@ -43,7 +43,7 @@ export default function AddProduct() {
       votes: 0,
       userId: user._id,
       status: "pending",
-      isFeatured: false,
+      featured: false,
       timestamp: new Date(),
     };
 

@@ -67,6 +67,7 @@ const ReportedContents = () => {
             </tr>
           </thead>
           <tbody>
+          
             {reportedProducts.length === 0 ? (
               <tr>
                 <td colSpan="3" className="text-center py-4 text-gray-500">

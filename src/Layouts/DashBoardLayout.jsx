@@ -1,4 +1,3 @@
-
 import React, { use, useEffect, useState } from "react";
 import { Link, NavLink, Outlet } from "react-router";
 import { AuthContext } from "../context/AuthContext";
@@ -17,13 +16,11 @@ import useAxiosSecure from "../pages/Hooks/useAxiosSecure";
 const DashBoardLayout = () => {
   const { user } = use(AuthContext);
   const [role, setRole] = useState(null);
-  const axiosSecure=useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
     const fetchRole = async () => {
-      const response = await axiosSecure.get(
-        `/user_role/${user?.email}`
-      );
+      const response = await axiosSecure.get(`/user_role/${user?.email}`);
       console.log(response.data.role);
       setRole(response.data.role);
     };
