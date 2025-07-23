@@ -20,6 +20,10 @@ const CheckoutForm = ({ user, onSuccess }) => {
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [error, setError] = useState("");
+  //
+
+  const [couponError, setCouponError] = useState("");
+
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
@@ -38,7 +42,7 @@ const CheckoutForm = ({ user, onSuccess }) => {
       }
     };
     fetchPaymentIntent();
-  }, [couponCode, user?.email]);
+  }, [user?.email]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,27 +58,57 @@ const CheckoutForm = ({ user, onSuccess }) => {
       onSuccess();
     }
   };
+  //last day
+  const handleApplyCoupon = async () => {
+    try {
+      const res = await axiosSecure.get(`/validate-coupon?code=${couponCode}`);
+
+      if (res.data.valid) {
+        setDiscount(res.data.discountAmount);
+        setCouponError("");
+      } else {
+        setDiscount(0);
+        setCouponError(res.data.message);
+      }
+    } catch (error) {
+      setDiscount(0);
+      setCouponError("Coupon not valid or expired.");
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        type="text"
-        value={couponCode}
-        onChange={(e) => setCouponCode(e.target.value)}
-        placeholder="Enter Coupon Code"
-        className="w-full border p-2 rounded"
-      />
+      <div className="flex gap-2">
+        <input
+          type="text"
+          value={couponCode}
+          onChange={(e) => setCouponCode(e.target.value)}
+          placeholder="Enter Coupon Code"
+          className="flex-1 border p-2 rounded"
+        />
+        <button
+          type="button"
+          onClick={handleApplyCoupon}
+          className="bg-green-600 text-white px-4 py-2 rounded"
+        >
+          Apply
+        </button>
+      </div>
+
       {discount > 0 && (
         <p className="text-green-600">Discount Applied: ${discount}</p>
       )}
+
       <CardElement className="p-3 border rounded" />
+
       {error && <p className="text-red-600">{error}</p>}
+
       <button
         type="submit"
         disabled={!stripe}
         className="w-full bg-blue-600 text-white py-2 rounded"
       >
-        Pay ${10 - discount}
+        Pay ${500 - discount}
       </button>
     </form>
   );
@@ -126,13 +160,13 @@ const MyProfile = () => {
             onClick={() => setShowModal(true)}
             className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
           >
-            Subscribe Membership ($10)
+            Subscribe Membership ($500)
           </button>
         </div>
       )}
 
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-[#e6fff7]  bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded shadow-lg w-full max-w-md relative">
             <button
               className="absolute top-2 right-2 text-red-600 text-xl"

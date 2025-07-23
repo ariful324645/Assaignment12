@@ -47,6 +47,7 @@ export default function AddProduct() {
       userId: user._id,
       status: "pending",
       featured: false,
+      valid: true,
       timestamp: new Date(),
     };
 

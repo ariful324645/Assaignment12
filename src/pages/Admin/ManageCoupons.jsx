@@ -31,6 +31,7 @@ const ManageCoupons = () => {
       expiryDate: form.expiryDate.value,
       description: form.description.value,
       discountAmount: parseFloat(form.discountAmount.value),
+      couponValid: true,
     };
 
     try {
