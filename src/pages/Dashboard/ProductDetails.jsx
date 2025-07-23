@@ -1,12 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
-
 import { AuthContext } from "../../context/AuthContext";
 import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router";
-
 import useAxiosSecure from "../Hooks/useAxiosSecure";
 import { FaThumbsUp } from "react-icons/fa";
-import { toast } from "react-toastify";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -15,30 +12,31 @@ const ProductDetails = () => {
   const axiosSecure = useAxiosSecure();
 
   const [product, setProduct] = useState(null);
-  console.log(product);
   const [reviews, setReviews] = useState([]);
-
   const [newReview, setNewReview] = useState({ description: "", rating: 5 });
   const [reportReason, setReportReason] = useState("");
 
   
 
-  /** Utility fallback for broken/missing images */
+const hasVoted = product?.users?.some(
+  (userId) => userId.toString() === user?._id?.toString()
+);
+  // Utility fallback for broken/missing images
   const getSafeImage = (src) =>
     src?.startsWith("http") ? src : "https://via.placeholder.com/400x300";
 
-  /** Fetch product info */
+  // Fetch product by ID (important: fetch single product by id)
   const fetchProduct = async () => {
     try {
       const res = await axiosSecure.get(`/products/${id}`);
       setProduct(res.data);
-      console.log(res);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error("Failed to fetch product:", error);
+      setProduct(null);
     }
   };
 
-  /** Fetch reviews for product */
+  // Fetch reviews for product
   const fetchReviews = async () => {
     try {
       const res = await axiosSecure.get(`/reviews/${id}`);
@@ -48,65 +46,57 @@ const ProductDetails = () => {
     }
   };
 
+  // Fetch product and reviews on load and when id changes
   useEffect(() => {
-    fetchProduct();
-    fetchReviews();
+    if (id) {
+      fetchProduct();
+      fetchReviews();
+    }
   }, [id]);
 
-  /** Check if current user is owner */
+  // Check if current user is owner
   const isOwner = user?.email === product?.ownerEmail;
 
-  /** Report handler */
+  // Check if user has voted this product
+  // Assuming product.usersVoted is an array of emails who voted
+  // const hasVoted = product?.usersVoted?.includes(user?.email);
+
+  // Report handler
   const handleReport = async () => {
     if (!user) return navigate("/login");
 
-    await axiosSecure.post(`/products/${id}/report`, {
-      userId: user.email,
-      reason: reportReason.trim(),
-    });
-    await fetchProduct();
-    setReportReason("");
-    Swal.fire("Success", "Your report has been submitted.", "success");
+    try {
+      await axiosSecure.post(`/products/${id}/report`, {
+        userId: user.email,
+        reason: reportReason.trim(),
+      });
+      await fetchProduct();
+      setReportReason("");
+      Swal.fire("Success", "Your report has been submitted.", "success");
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Error", "Failed to submit report.", "error");
+    }
   };
 
-  /** Upvote handler */
+  // Upvote handler
+  const handleUpvote = async () => {
+    if (!user) return navigate("/login");
 
-  // const handleUpvote = async (id) => {
-  //   try {
-  //     const res = await axiosSecure.post(`/products/featured/${id}/upvote`, {
-  //       userEmail: user.email,
-  //     });
-
-  //     const updatedProduct = res.data.product;
-  //     setProduct(updatedProduct);
-  //   } catch (err) {
-  //     toast.error(err.response?.data?.error || "Vote failed");
-  //   }
-  // };
-  const handleUpvote = async (id) => {
     try {
       const res = await axiosSecure.post(`/products/featured/${id}/upvote`, {
         userEmail: user.email,
       });
-
       const updatedProduct = res.data.product;
-
-      // Check if current user has voted
-      const hasVotedNow = updatedProduct.users?.some(
-        (u) => u === user._id || u?.$oid === user._id
-      );
-
-      // Add hasVoted to the product manually
-      setProduct({
-        ...updatedProduct,
-        hasVoted: hasVotedNow,
-      });
+      setProduct(updatedProduct); // update product including votes & usersVoted
+      Swal.fire("Success", "Thank you for voting!", "success");
     } catch (err) {
-      toast.error(err.response?.data?.error || "Vote failed");
+      console.error("Upvote failed:", err);
+      Swal.fire("Info", "Already voted this Product.", "Info");
     }
   };
 
-  /** Submit review handler */
+  // Submit review handler
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!user) return navigate("/login");
@@ -178,40 +168,16 @@ const ProductDetails = () => {
         </div>
 
         <div className="mt-4 flex flex-col sm:flex-row gap-4">
-          {/*        
           <button
             className={`btn btn-outline flex items-center gap-2 ${
-              product?.hasVoted || user?.email === product?.ownerEmail
+              hasVoted || user?.email === product?.ownerEmail
                 ? "btn-disabled cursor-not-allowed text-gray-400"
                 : "btn-primary"
             }`}
-            onClick={() => handleUpvote(product._id)}
+            onClick={handleUpvote}
             disabled={product?.hasVoted || user?.email === product?.ownerEmail}
             title={
               hasVoted
-                ? "You have already voted for this product"
-                : user?.email === product?.ownerEmail
-                ? "You cannot vote on your own product"
-                : ""
-            }
-          >
-            <FaThumbsUp />
-            {product?.votes}
-          </button> */}
-          <button
-            className={`btn btn-outline flex items-center gap-2 ${
-              product?.hasVoted || user?.email === product?.ownerEmail
-                ? "btn-disabled cursor-not-allowed text-gray-400"
-                : "btn-primary"
-            }`}
-            onClick={() => {
-              if (!product?.hasVoted && user?.email !== product?.ownerEmail) {
-                handleUpvote(product._id);
-              }
-            }}
-            disabled={product?.hasVoted || user?.email === product?.ownerEmail}
-            title={
-              product?.hasVoted
                 ? "You have already voted for this product"
                 : user?.email === product?.ownerEmail
                 ? "You cannot vote on your own product"
