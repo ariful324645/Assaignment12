@@ -29,11 +29,36 @@ const FeaturedProducts = () => {
   }, [axiosSecure, user]);
 
   // Handle upvote action
+  // const handleUpvote = async (productId) => {
+  //   if (!user) return navigate("/login");
+
+  //   try {
+  //     const res = await axiosSecure.post(
+  //       `/products/featured/${productId}/upvote`,
+  //       { userEmail: user.email }
+  //     );
+
+  //     const updatedProduct = res.data.product;
+
+  //     // Update product list state, mark hasVoted true on updated product
+  //     setProducts((prev) =>
+  //       prev
+  //         .map((p) =>
+  //           p._id === productId ? { ...updatedProduct, hasVoted: true } : p
+  //         )
+  //         .sort((a, b) => b.votes - a.votes)
+  //     );
+  //   } catch (err) {
+  //     console.error("Upvote failed:", err);
+  //     // Optional: handle error display here
+  //   }
+  // };
   const handleUpvote = async (productId) => {
     if (!user) return navigate("/login");
 
     try {
       const res = await axiosSecure.post(
+        // `/products/featured/${productId}/upvote`,
         `/products/featured/${productId}/upvote`,
         { userEmail: user.email }
       );

@@ -3,8 +3,10 @@ import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router";
-import Loading from "../../components/Loading";
+
 import useAxiosSecure from "../Hooks/useAxiosSecure";
+import { FaThumbsUp } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -13,10 +15,13 @@ const ProductDetails = () => {
   const axiosSecure = useAxiosSecure();
 
   const [product, setProduct] = useState(null);
+  console.log(product);
   const [reviews, setReviews] = useState([]);
 
   const [newReview, setNewReview] = useState({ description: "", rating: 5 });
   const [reportReason, setReportReason] = useState("");
+
+  
 
   /** Utility fallback for broken/missing images */
   const getSafeImage = (src) =>
@@ -27,6 +32,7 @@ const ProductDetails = () => {
     try {
       const res = await axiosSecure.get(`/products/${id}`);
       setProduct(res.data);
+      console.log(res);
     } catch (err) {
       console.error(err);
     }
@@ -64,15 +70,39 @@ const ProductDetails = () => {
   };
 
   /** Upvote handler */
-  const handleUpvote = async () => {
-    if (!user) return navigate("/login");
+
+  // const handleUpvote = async (id) => {
+  //   try {
+  //     const res = await axiosSecure.post(`/products/featured/${id}/upvote`, {
+  //       userEmail: user.email,
+  //     });
+
+  //     const updatedProduct = res.data.product;
+  //     setProduct(updatedProduct);
+  //   } catch (err) {
+  //     toast.error(err.response?.data?.error || "Vote failed");
+  //   }
+  // };
+  const handleUpvote = async (id) => {
     try {
       const res = await axiosSecure.post(`/products/featured/${id}/upvote`, {
-        userId: user.email,
+        userEmail: user.email,
       });
-      setProduct(res.data);
+
+      const updatedProduct = res.data.product;
+
+      // Check if current user has voted
+      const hasVotedNow = updatedProduct.users?.some(
+        (u) => u === user._id || u?.$oid === user._id
+      );
+
+      // Add hasVoted to the product manually
+      setProduct({
+        ...updatedProduct,
+        hasVoted: hasVotedNow,
+      });
     } catch (err) {
-      console.error(err);
+      toast.error(err.response?.data?.error || "Vote failed");
     }
   };
 
@@ -148,12 +178,48 @@ const ProductDetails = () => {
         </div>
 
         <div className="mt-4 flex flex-col sm:flex-row gap-4">
+          {/*        
           <button
-            onClick={handleUpvote}
-            disabled={!user || isOwner}
-            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded disabled:opacity-50"
+            className={`btn btn-outline flex items-center gap-2 ${
+              product?.hasVoted || user?.email === product?.ownerEmail
+                ? "btn-disabled cursor-not-allowed text-gray-400"
+                : "btn-primary"
+            }`}
+            onClick={() => handleUpvote(product._id)}
+            disabled={product?.hasVoted || user?.email === product?.ownerEmail}
+            title={
+              hasVoted
+                ? "You have already voted for this product"
+                : user?.email === product?.ownerEmail
+                ? "You cannot vote on your own product"
+                : ""
+            }
           >
-            Upvote
+            <FaThumbsUp />
+            {product?.votes}
+          </button> */}
+          <button
+            className={`btn btn-outline flex items-center gap-2 ${
+              product?.hasVoted || user?.email === product?.ownerEmail
+                ? "btn-disabled cursor-not-allowed text-gray-400"
+                : "btn-primary"
+            }`}
+            onClick={() => {
+              if (!product?.hasVoted && user?.email !== product?.ownerEmail) {
+                handleUpvote(product._id);
+              }
+            }}
+            disabled={product?.hasVoted || user?.email === product?.ownerEmail}
+            title={
+              product?.hasVoted
+                ? "You have already voted for this product"
+                : user?.email === product?.ownerEmail
+                ? "You cannot vote on your own product"
+                : ""
+            }
+          >
+            <FaThumbsUp />
+            {product?.votes}
           </button>
 
           <div className="flex flex-col sm:flex-row items-center gap-2">

@@ -13,7 +13,7 @@ export default function AddProduct() {
   const [tags, setTags] = useState([]);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const axiosSecure=useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
   const {
     register,
@@ -28,6 +28,9 @@ export default function AddProduct() {
       navigate("/login");
       return;
     }
+    //add subscription
+
+    //sub above
 
     const tagTexts = tags.map((tag) => tag.text); // convert tags array of objects to array of strings
 
@@ -48,7 +51,11 @@ export default function AddProduct() {
     };
 
     try {
-      await axiosSecure.post("/products", newProduct);
+      const res = await axiosSecure.post(`/products`, newProduct, {
+        params: { email: user?.email },
+      });
+
+      console.log(res);
       toast.success("Product added successfully!");
       reset();
       setTags([]);
@@ -61,7 +68,23 @@ export default function AddProduct() {
       });
       navigate("/dashboard/myProducts");
     } catch (err) {
-      toast.error("Failed to add product");
+      // Extract custom backend message if available
+      const message =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        "Failed to add product";
+
+      // SweetAlert for meaningful error
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: message,
+      }).then(() => {
+        navigate("/dashboard/myProfile");
+      });
+
+      // Optional toast
+      toast.error(message);
     }
   };
 

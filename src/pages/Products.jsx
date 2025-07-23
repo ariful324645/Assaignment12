@@ -1,10 +1,8 @@
-import React, { useEffect, useState, use } from "react";
-
+import React, { useEffect, useState, useContext } from "react";
 import { FaThumbsUp } from "react-icons/fa";
-
 import { useNavigate } from "react-router";
-import { AuthContext } from "../context/AuthContext";
 import useAxiosSecure from "./Hooks/useAxiosSecure";
+import { AuthContext } from "../context/AuthContext";
 
 const Products = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -12,47 +10,52 @@ const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
-  const { user } = use(AuthContext);
-  const axiosSecure=useAxiosSecure()
-  console.log(user);
+  const { user } = useContext(AuthContext);
+  const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    const fetchProducts = async () => {
+      try {
+        const res = await axiosSecure.get("/products/allProducts", {
+          params: { userEmail: user?.email },
+        });
+        setAllProducts(res.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
 
-  const fetchProducts = async () => {
-    try {
-      const res = await axiosSecure.get("/products/allProducts");
-
-      // const sorted = res.data.sort((a, b) => b.votes - a.votes);
-      setAllProducts(res.data);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
+    if (user?.email) fetchProducts();
+  }, [axiosSecure, user]);
 
   const handleUpvote = async (productId) => {
-    if (!user) return navigate("/login");
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
     try {
       const res = await axiosSecure.post(
-        `/products/featured/${productId}/upvote`,
-        { userId: user.email }
+        `/products/allProducts/${productId}/upvote`,
+        { userEmail: user.email }
       );
 
+      const updatedProduct = res.data.product;
+
       setAllProducts((prev) =>
-        prev
-          .map((p) => (p._id === productId ? res.data : p))
-          .sort((a, b) => b.votes - a.votes)
+        prev.map((p) =>
+          p._id === productId ? { ...updatedProduct, hasVoted: true } : p
+        )
       );
     } catch (err) {
-      console.error("Upvote failed:", err);
+      console.log(err?.response?.data?.error || "Upvote failed");
     }
   };
 
-  const handleClick = (productId) => {
+  const handleClick = (id) => {
     if (user) {
-      navigate(`/productDetails/${productId}`);
+      navigate(`/productDetails/${id}`);
     } else {
       navigate("/login");
     }
@@ -91,57 +94,72 @@ const Products = () => {
         />
       </div>
 
-      {/* Product Grid */}
       <div className="w-11/12 mx-auto">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 p-4">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
           {paginatedProducts.length > 0 ? (
-            paginatedProducts.map((product) => (
-              <div
-                key={product._id}
-                className="card bg-base-100 shadow-md border"
-              >
-                <figure>
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-64 object-cover"
-                  />
-                </figure>
-                <div className="card-body">
-                  <h2
-                    className="card-title text-blue-500 underline cursor-pointer"
-                    onClick={() => handleClick(product._id)}
-                  >
-                    {product.name}
-                  </h2>
+            paginatedProducts.map((product) => {
+              const isOwner = user?.email === product.ownerEmail;
+              const hasVoted = product.hasVoted;
+              const disabled = !user || isOwner || hasVoted;
 
-                  <div className="flex flex-wrap gap-2 mb-2">
-                    {product.tags?.length ? (
-                      product.tags.map((tag, i) => (
-                        <span
-                          key={i}
-                          className="badge badge-outline badge-primary"
-                        >
-                          {tag}
-                        </span>
-                      ))
-                    ) : (
-                      <span className="text-gray-400">No Tags</span>
-                    )}
-                  </div>
-
-                  <div className="card-actions justify-end">
-                    <button
-                      className="btn btn-outline btn-primary flex items-center gap-2"
-                      onClick={() => handleUpvote(product._id)}
-                      disabled={user?.email === product.ownerEmail}
+              return (
+                <div
+                  key={product._id}
+                  className="card bg-base-100 shadow-md border"
+                >
+                  <figure>
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-64 object-cover"
+                    />
+                  </figure>
+                  <div className="card-body">
+                    <h2
+                      className="card-title text-blue-500 underline cursor-pointer"
+                      onClick={() => handleClick(product._id)}
                     >
-                      <FaThumbsUp /> {product.votes}
-                    </button>
+                      {product.name}
+                    </h2>
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {product.tags?.length ? (
+                        product.tags.map((tag, i) => (
+                          <span
+                            key={i}
+                            className="badge badge-outline badge-primary"
+                          >
+                            {tag}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-gray-400">No Tags</span>
+                      )}
+                    </div>
+                    <div className="card-actions justify-end">
+                      <button
+                        disabled={disabled}
+                        className={`btn ${
+                          disabled ? "btn-disabled" : "btn-primary"
+                        }`}
+                        title={
+                          !user
+                            ? "Login required"
+                            : isOwner
+                            ? "You cannot vote on your own product"
+                            : hasVoted
+                            ? "You have already voted"
+                            : ""
+                        }
+                        onClick={() => handleUpvote(product._id)}
+                      >
+                        <FaThumbsUp />
+                        {product.votes}
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           ) : (
             <p className="text-center text-gray-500 col-span-3">
               No products found.
