@@ -31,6 +31,33 @@ const Register = () => {
       });
       return; // stop further execution if password invalid
     }
+    // Password uppercase validation
+    const uppercasePattern = /[A-Z]/;
+    if (!uppercasePattern.test(password)) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Password must contain at least one Uppercase letter.",
+        timer: 3000,
+        showConfirmButton: false,
+        position: "center",
+      });
+      return;
+    }
+
+    // Password lowercase validation
+    const lowercasePattern = /[a-z]/;
+    if (!lowercasePattern.test(password)) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Password must contain at least one Lowercase letter.",
+        timer: 3000,
+        showConfirmButton: false,
+        position: "center",
+      });
+      return;
+    }
 
     createUser(email, password)
       .then(async (result) => {
