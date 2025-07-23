@@ -19,6 +19,19 @@ const Register = () => {
     const photo = e.target.photo.value;
     const password = e.target.password.value;
     console.log(name, email, photo, password);
+    // Password length validation
+    if (password.length < 6) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Password must be at least 6 characters long.",
+        timer: 2500,
+        showConfirmButton: false,
+        position: "center",
+      });
+      return; // stop further execution if password invalid
+    }
+
     createUser(email, password)
       .then(async (result) => {
         //update user info
@@ -29,10 +42,7 @@ const Register = () => {
           created_at: new Date().toISOString(),
           last_login: new Date().toISOString(),
         };
-        const userRes = await axiosSecure.post(
-          "/users",
-          userInfo
-        );
+        const userRes = await axiosSecure.post("/users", userInfo);
         console.log(userRes);
 
         updateUser({ displayName: name, photoURL: photo })

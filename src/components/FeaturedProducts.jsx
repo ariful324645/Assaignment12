@@ -11,13 +11,29 @@ const FeaturedProducts = () => {
   const axiosSecure = useAxiosSecure();
 
   // Fetch featured products with vote status
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     if (!user) return;
+
+  //     try {
+  //       const res = await axiosSecure.get(
+  //         `/products/featured?email=${encodeURIComponent(user.email)}`
+  //       );
+  //       setProducts(res.data);
+  //     } catch (error) {
+  //       console.error("Failed to fetch featured products:", error);
+  //     }
+  //   };
+
+  //   fetchProducts();
+  // }, [axiosSecure, user]);
   useEffect(() => {
     const fetchProducts = async () => {
-      if (!user) return;
-
       try {
         const res = await axiosSecure.get(
-          `/products/featured?email=${encodeURIComponent(user.email)}`
+          user?.email
+            ? `/products/featured?email=${encodeURIComponent(user.email)}`
+            : "/products/featured"
         );
         setProducts(res.data);
       } catch (error) {
@@ -27,6 +43,7 @@ const FeaturedProducts = () => {
 
     fetchProducts();
   }, [axiosSecure, user]);
+
 
   // Handle upvote action
   // const handleUpvote = async (productId) => {

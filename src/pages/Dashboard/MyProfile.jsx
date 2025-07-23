@@ -8,6 +8,8 @@ import {
 } from "@stripe/react-stripe-js";
 import { AuthContext } from "../../context/AuthContext";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const stripePromise = loadStripe(import.meta.env.VITE_payment_key);
 
@@ -66,13 +68,34 @@ const CheckoutForm = ({ user, onSuccess }) => {
       if (res.data.valid) {
         setDiscount(res.data.discountAmount);
         setCouponError("");
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Coupon applied successfully!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       } else {
         setDiscount(0);
         setCouponError(res.data.message);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Invalid or expired coupon. Please use a valid one.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
     } catch (error) {
       setDiscount(0);
       setCouponError("Coupon not valid or expired.");
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Invalid or expired coupon. Please use a valid one.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 

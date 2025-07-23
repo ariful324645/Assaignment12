@@ -26,7 +26,7 @@ const Products = () => {
       }
     };
 
-    if (user?.email) fetchProducts();
+    fetchProducts();
   }, [axiosSecure, user]);
 
   const handleUpvote = async (productId) => {
@@ -100,7 +100,7 @@ const Products = () => {
             paginatedProducts.map((product) => {
               const isOwner = user?.email === product.ownerEmail;
               const hasVoted = product.hasVoted;
-              const disabled = !user || isOwner || hasVoted;
+              const disabled =  isOwner || hasVoted;
 
               return (
                 <div
