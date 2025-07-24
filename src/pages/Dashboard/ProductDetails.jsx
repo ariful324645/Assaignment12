@@ -149,14 +149,14 @@ const hasVoted = product?.users?.some(
         </div>
         <div className="mt-2">
           <strong>External Link:</strong>{" "}
-          {product?.externalLink ? (
+          {product?.externalLinks ? (
             <a
-              href={product.externalLink}
+              href={product.externalLinks}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-500 underline"
             >
-              Visit
+              {product.externalLinks}
             </a>
           ) : (
             "None"

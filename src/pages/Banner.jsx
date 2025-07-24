@@ -64,6 +64,8 @@ const Banner = () => {
             color: "white",
             textShadow: "2px 2px 8px rgba(0,0,0,0.8)",
             maxWidth: "50%",
+             
+              zIndex: 8,
           }}
         >
           <h1 style={{ fontSize: "2.5rem", marginBottom: 10 }}>
@@ -73,6 +75,9 @@ const Banner = () => {
             {slides[currentIndex].description}
           </p>
         </div>
+     
+
+
         <button
           onClick={prevSlide}
           style={buttonStyle("left")}

@@ -6,7 +6,7 @@ import useAxiosSecure from "../Hooks/useAxiosSecure";
 const ManageCoupons = () => {
   const [coupons, setCoupons] = useState([]);
   const [editingCoupon, setEditingCoupon] = useState(null);
-  const axiosSecure=useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
   // Load all coupons from server
   useEffect(() => {
@@ -36,10 +36,7 @@ const ManageCoupons = () => {
 
     try {
       if (editingCoupon) {
-        await axiosSecure.put(
-          `/coupons/${editingCoupon._id}`,
-          newCoupon
-        );
+        await axiosSecure.put(`/coupons/${editingCoupon._id}`, newCoupon);
         Swal.fire("Updated!", "Coupon updated successfully.", "success");
       } else {
         await axiosSecure.post("/coupons", newCoupon);
@@ -128,25 +125,31 @@ const ManageCoupons = () => {
       </form>
 
       {/* Coupon Display Table */}
+
       <div className="overflow-x-auto">
         <table className="table w-full border">
           <thead className="bg-gray-100">
-            <tr>
+            <tr className="whitespace-nowrap">
               <th>SL</th>
               <th>Code</th>
               <th>Expiry</th>
-              <th>Description</th>
+              <th className="max-w-[300px] truncate">Description</th>
               <th>Discount</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {coupons.map((coupon, index) => (
-              <tr key={coupon._id}>
+              <tr key={coupon._id} className="whitespace-nowrap">
                 <td>{index + 1}</td>
                 <td>{coupon.code}</td>
                 <td>{coupon.expiryDate?.slice(0, 10)}</td>
-                <td>{coupon.description}</td>
+                <td
+                  className="max-w-[300px] truncate"
+                  title={coupon.description}
+                >
+                  {coupon.description}
+                </td>
                 <td>{coupon.discountAmount}</td>
                 <td>
                   <button

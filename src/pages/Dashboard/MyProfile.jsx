@@ -119,7 +119,7 @@ const CheckoutForm = ({ user, onSuccess }) => {
       </div>
 
       {discount > 0 && (
-        <p className="text-green-600">Discount Applied: ${discount}</p>
+        <p className="text-green-600">Discount Applied: {discount} TK</p>
       )}
 
       <CardElement className="p-3 border rounded" />
@@ -131,7 +131,7 @@ const CheckoutForm = ({ user, onSuccess }) => {
         disabled={!stripe}
         className="w-full bg-blue-600 text-white py-2 rounded"
       >
-        Pay ${500 - discount}
+        Pay Only {500 - discount} TK
       </button>
     </form>
   );
@@ -160,16 +160,20 @@ const MyProfile = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow">
-      <div className="flex items-center mb-6">
-        <img
-          src={user.photoURL || "/default-profile.png"}
-          alt={user.displayName}
-          className="w-16 h-16 rounded-full mr-4 border"
-        />
-        <div>
-          <p className="font-semibold text-lg">{user.displayName}</p>
-          <p className="text-gray-600">{user.email}</p>
+    <div className="max-w-md mx-auto mt-56 p-6 bg-white rounded shadow">
+      <div>
+        <div className="flex items-center justify-center mb-5">
+          <img
+            src={user.photoURL || "/default-profile.png"}
+            alt={user.displayName}
+            className="w-16 h-16 rounded-full mr-4 border"
+          />
+        </div>
+        <div className="mb-5 space-y-2">
+          <p className="font-semibold text-center text-lg">
+            {user.displayName}
+          </p>
+          <p className="text-gray-600 text-center ">{user.email}</p>
         </div>
       </div>
 
@@ -183,7 +187,7 @@ const MyProfile = () => {
             onClick={() => setShowModal(true)}
             className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
           >
-            Subscribe Membership ($500)
+            Subscribe Membership Only <span className=" font-bold">(500 TK)</span>
           </button>
         </div>
       )}

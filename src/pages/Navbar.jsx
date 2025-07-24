@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
- // ✅ Correct import
+// ✅ Correct import
 import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
 import { Link, NavLink } from "react-router";
@@ -29,11 +29,37 @@ const Navbar = () => {
   };
 
   const links = (
+    // <>
+    //   <li>
+    //     <NavLink
+    //       to="/"
+    //       className={({ isActive }) =>
+    //         isActive ? "font-bold  text-blue-700 underline" : ""
+    //       }
+    //     >
+    //       Home
+    //     </NavLink>
+    //   </li>
+    //   <li>
+    //     <NavLink
+    //       to="/products"
+    //       className={({ isActive }) =>
+    //         isActive ? "font-bold text-blue-700 underline" : ""
+    //       }
+    //     >
+    //       Products
+    //     </NavLink>
+    //   </li>
+    // </>
     <>
       <li>
         <NavLink
           to="/"
-          className={({ isActive }) => (isActive ? "font-bold text-white" : "")}
+          className={({ isActive }) =>
+            isActive && user
+              ? "font-semibold text-white bg-blue-600 rounded-lg px-3 py-1 shadow-md transition duration-300 "
+              : ""
+          }
         >
           Home
         </NavLink>
@@ -41,7 +67,11 @@ const Navbar = () => {
       <li>
         <NavLink
           to="/products"
-          className={({ isActive }) => (isActive ? "font-bold text-white" : "")}
+          className={({ isActive }) =>
+            isActive && user
+              ? "font-semibold text-white bg-blue-600 rounded-lg px-3 py-1 shadow-md transition duration-300"
+              : ""
+          }
         >
           Products
         </NavLink>
