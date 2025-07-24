@@ -9,15 +9,15 @@ const Footer = () => {
         {/* Logo & About */}
         <div>
           {/* <h2 className="text-2xl font-bold text-white">AppOrbit</h2> */}
-             <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <img
-              src="https://i.ibb.co/zVvp0GsS/appOrbit.jpg"
+              src="https://i.ibb.co/d49Jp2JZ/app-Orbit1.webp"
               alt="AppOrbit Logo"
               className="w-10 h-10 rounded-full object-cover"
             />
             <span className="text-xl font-bold">AppOrbit</span>
           </div>
-       
+
           <p className="mt-2 text-sm">
             Discover, upvote, and share the latest web apps, AI tools, and tech
             products.
@@ -38,7 +38,8 @@ const Footer = () => {
               <FaTwitter />
             </a>
             <a
-              href="https://www.linkedin.com/feed/" target="blank"
+              href="https://www.linkedin.com/feed/"
+              target="blank"
               className="hover:text-blue-600"
             >
               <FaLinkedinIn />
@@ -73,9 +74,7 @@ const Footer = () => {
                 DashBoard
               </Link>
             </li>
-            <li>
-             
-            </li>
+            <li></li>
           </ul>
         </div>
 

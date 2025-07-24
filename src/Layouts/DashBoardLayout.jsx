@@ -39,7 +39,7 @@ const DashBoardLayout = () => {
           <Link to="/">
             <div className="flex items-center ml-3 gap-2 ">
               <img
-                src="https://i.ibb.co/zVvp0GsS/appOrbit.jpg"
+                src="https://i.ibb.co/d49Jp2JZ/app-Orbit1.webp"
                 alt="AppOrbit Logo"
                 className="w-12 h-12 rounded-full object-cover"
               />

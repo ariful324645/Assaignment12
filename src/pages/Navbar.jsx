@@ -29,28 +29,6 @@ const Navbar = () => {
   };
 
   const links = (
-    // <>
-    //   <li>
-    //     <NavLink
-    //       to="/"
-    //       className={({ isActive }) =>
-    //         isActive ? "font-bold  text-blue-700 underline" : ""
-    //       }
-    //     >
-    //       Home
-    //     </NavLink>
-    //   </li>
-    //   <li>
-    //     <NavLink
-    //       to="/products"
-    //       className={({ isActive }) =>
-    //         isActive ? "font-bold text-blue-700 underline" : ""
-    //       }
-    //     >
-    //       Products
-    //     </NavLink>
-    //   </li>
-    // </>
     <>
       <li>
         <NavLink
@@ -108,14 +86,16 @@ const Navbar = () => {
               {links}
             </ul>
           </div>
-          <div className="flex items-center gap-2">
-            <img
-              src="https://i.ibb.co/zVvp0GsS/appOrbit.jpg"
-              alt="AppOrbit Logo"
-              className="w-10 h-10 rounded-full object-cover"
-            />
-            <span className="text-xl font-bold">AppOrbit</span>
-          </div>
+          <Link to="/dashboard">
+            <div className="flex items-center ml-3 gap-2 ">
+              <img
+                src="https://i.ibb.co/d49Jp2JZ/app-Orbit1.webp"
+                alt="AppOrbit Logo"
+                className="w-12 h-12 rounded-full object-cover"
+              />
+              <span className="text-xl font-bold">AppOrbit</span>
+            </div>
+          </Link>
         </div>
 
         {/* Navbar Center (Desktop) */}
