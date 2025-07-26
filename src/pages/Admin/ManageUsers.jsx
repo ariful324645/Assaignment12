@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { use, useEffect, useState } from "react";
+
 import Swal from "sweetalert2";
 import useAxiosSecure from "../Hooks/useAxiosSecure";
+import { AuthContext } from "../../context/AuthContext";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
   const axiosSecure=useAxiosSecure()
+
 
   // Fetch all users
   useEffect(() => {
@@ -87,7 +89,9 @@ const ManageUsers = () => {
             {users.map((user, index) => (
               <tr key={user._id} className="hover">
                 <td>{index + 1}</td>
-                <td>{user.name || "N/A"}</td>
+                <td>{user.name || user.displayName}</td>
+            
+
                 <td className="break-words max-w-[120px] md:max-w-none">
                   {user.email}
                 </td>

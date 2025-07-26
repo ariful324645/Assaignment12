@@ -13,6 +13,10 @@ const CouponSlider = () => {
       .then((res) => setCoupons(res.data))
       .catch((err) => console.error("Error fetching coupons:", err));
   }, []);
+
+
+
+
   // useEffect(() => {
   //   const fetchCoupons = async () => {
   //     try {
