@@ -7,11 +7,28 @@ const CouponSlider = () => {
   const axiosSecure = useAxiosSecure();
 
   // Fetch valid coupons
+  // useEffect(() => {
+  //   axiosSecure
+  //     .get("/valid-coupons")
+  //     .then((res) => setCoupons(res.data))
+  //     .catch((err) => console.error("Error fetching coupons:", err));
+  // }, []);
   useEffect(() => {
-    axiosSecure
-      .get("/valid-coupons")
-      .then((res) => setCoupons(res.data))
-      .catch((err) => console.error("Error fetching coupons:", err));
+    const fetchCoupons = async () => {
+      try {
+        const res = await axiosSecure.get("/valid-coupons");
+
+        setCoupons(res.data);
+        setCurrentIndex(0); // Reset slider position on update
+      } catch (error) {
+        console.error("Error fetching coupons:", error);
+      }
+    };
+
+    fetchCoupons();
+    const interval = setInterval(fetchCoupons, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   // Auto slide
@@ -24,8 +41,11 @@ const CouponSlider = () => {
 
   if (!coupons.length) {
     return (
-      <div className="text-center text-gray-500 py-10">
-        🎫 No valid coupons available right now.
+      <div className="w-11/12 mx-auto my-10 text-center text-gray-500 py-10 bg-gray-500">
+        <h2 className="text-3xl font-bold text-center mb-6 text-cyan-300 drop-shadow-md">
+          💥 Exclusive Membership Coupons
+        </h2>
+        <p className="text-white"> 🎫 No valid coupons available right now.</p>
       </div>
     );
   }

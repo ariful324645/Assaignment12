@@ -14,7 +14,7 @@ import {
 import useAxiosSecure from "../pages/Hooks/useAxiosSecure";
 
 const DashBoardLayout = () => {
-  const { user } = use(AuthContext);
+  const { user,loading } = use(AuthContext);
   const [role, setRole] = useState(null);
   const axiosSecure = useAxiosSecure();
 
@@ -25,10 +25,10 @@ const DashBoardLayout = () => {
       setRole(response.data.role);
     };
 
-    if (user?.email) {
+    if (!loading && user?.email) {
       fetchRole();
     }
-  }, [user]);
+  }, [loading, user,axiosSecure]);
 
   // const role = "admin";
   return (

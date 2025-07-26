@@ -16,11 +16,9 @@ const ProductDetails = () => {
   const [newReview, setNewReview] = useState({ description: "", rating: 5 });
   const [reportReason, setReportReason] = useState("");
 
-  
-
-const hasVoted = product?.users?.some(
-  (userId) => userId.toString() === user?._id?.toString()
-);
+  const hasVoted = product?.users?.some(
+    (userId) => userId.toString() === user?._id?.toString()
+  );
   // Utility fallback for broken/missing images
   const getSafeImage = (src) =>
     src?.startsWith("http") ? src : "https://via.placeholder.com/400x300";
@@ -63,8 +61,6 @@ const hasVoted = product?.users?.some(
 
   // Report handler
   const handleReport = async () => {
-    if (!user) return navigate("/login");
-
     try {
       await axiosSecure.post(`/products/${id}/report`, {
         userId: user.email,
@@ -88,7 +84,7 @@ const hasVoted = product?.users?.some(
         userEmail: user.email,
       });
       const updatedProduct = res.data.product;
-      setProduct(updatedProduct); // update product including votes & usersVoted
+      setProduct(updatedProduct); 
       Swal.fire("Success", "Thank you for voting!", "success");
     } catch (err) {
       console.error("Upvote failed:", err);

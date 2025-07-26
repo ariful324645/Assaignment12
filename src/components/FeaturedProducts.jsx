@@ -72,7 +72,7 @@ const FeaturedProducts = () => {
           .map((p) =>
             p._id === productId ? { ...updatedProduct, hasVoted: true } : p
           )
-          .sort((a, b) => b.votes - a.votes)
+          // .sort((a, b) => b.votes - a.votes)
       );
     } catch (err) {
       console.error("Upvote failed:", err);
