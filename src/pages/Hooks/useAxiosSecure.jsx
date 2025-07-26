@@ -5,7 +5,7 @@ import { AuthContext } from "../../context/AuthContext";
 const axiosSecure = axios.create({
   // baseURL: `https://app-orbit-server-six.vercel.app`,
 
-  baseURL: `http://localhost:3000`,
+  baseURL: `https://app-orbit-server-six.vercel.app`,
 });
 
 
