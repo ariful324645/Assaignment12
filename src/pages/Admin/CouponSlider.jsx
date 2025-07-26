@@ -7,29 +7,29 @@ const CouponSlider = () => {
   const axiosSecure = useAxiosSecure();
 
   // Fetch valid coupons
-  // useEffect(() => {
-  //   axiosSecure
-  //     .get("/valid-coupons")
-  //     .then((res) => setCoupons(res.data))
-  //     .catch((err) => console.error("Error fetching coupons:", err));
-  // }, []);
   useEffect(() => {
-    const fetchCoupons = async () => {
-      try {
-        const res = await axiosSecure.get("/valid-coupons");
-
-        setCoupons(res.data);
-        setCurrentIndex(0); // Reset slider position on update
-      } catch (error) {
-        console.error("Error fetching coupons:", error);
-      }
-    };
-
-    fetchCoupons();
-    const interval = setInterval(fetchCoupons, 5000);
-
-    return () => clearInterval(interval);
+    axiosSecure
+      .get("/valid-coupons")
+      .then((res) => setCoupons(res.data))
+      .catch((err) => console.error("Error fetching coupons:", err));
   }, []);
+  // useEffect(() => {
+  //   const fetchCoupons = async () => {
+  //     try {
+  //       const res = await axiosSecure.get("/valid-coupons");
+
+  //       setCoupons(res.data);
+  //       setCurrentIndex(0); // Reset slider position on update
+  //     } catch (error) {
+  //       console.error("Error fetching coupons:", error);
+  //     }
+  //   };
+
+  //   fetchCoupons();
+  //   const interval = setInterval(fetchCoupons, 5000);
+
+  //   return () => clearInterval(interval);
+  // }, []);
 
   // Auto slide
   useEffect(() => {
